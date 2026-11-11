@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dala Threads | Services</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--gold:#c9a84c;--gold-light:#e8c97a;--deep:#0f0820;--surface:#160d2a;--surface2:#1e1235;--rose:#8b2252;--text:#f5ede0;--text-muted:rgba(245,237,224,0.5);--border:rgba(201,168,76,0.15);--transition:all 0.4s cubic-bezier(0.4,0,0.2,1);--header-h:72px}
+body.light{--deep:#f7f1e8;--surface:#ede4d4;--surface2:#e4d8c4;--text:#1a0f2e;--text-muted:rgba(26,15,46,0.5);--border:rgba(139,34,82,0.15)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--deep);color:var(--text);overflow-x:hidden;transition:background .4s,color .4s;min-height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--deep)}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+:focus-visible{outline:2px solid var(--gold-light);outline-offset:3px}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:1100;background:linear-gradient(90deg,var(--rose),var(--gold),var(--gold-light));box-shadow:0 0 10px rgba(201,168,76,.6)}
+
+/* ── HEADER ── */
+header{position:fixed;top:0;width:100%;height:var(--header-h);z-index:1000;padding:0 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(15,8,32,0.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:var(--transition)}
+body.light header{background:rgba(247,241,232,0.9)}
+header.scrolled{height:60px;background:rgba(8,3,20,0.97);box-shadow:0 4px 30px rgba(0,0,0,0.4)}
+body.light header.scrolled{background:rgba(247,241,232,0.98)}
+.logo-container{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+.logo-circle{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--rose));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:600;color:#fff;box-shadow:0 0 18px rgba(201,168,76,0.35);flex-shrink:0;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.logo-container:hover .logo-circle{transform:rotate(360deg)}
+.logo-container h1{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;letter-spacing:2px;background:linear-gradient(90deg,var(--gold-light),var(--text));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+nav{display:flex;gap:26px;align-items:center}
+nav a{color:var(--text-muted);text-decoration:none;font-size:.78rem;letter-spacing:1.8px;text-transform:uppercase;font-weight:500;transition:var(--transition);position:relative}
+nav a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--gold);transition:var(--transition)}
+nav a:hover{color:var(--gold-light)}nav a:hover::after{width:100%}
+nav a.active{color:var(--gold-light)}nav a.active::after{width:100%}
+.top-icons{display:flex;gap:10px;align-items:center}
+.icon-btn{width:36px;height:36px;border-radius:50%;background:rgba(201,168,76,0.08);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-size:.85rem;cursor:pointer;transition:var(--transition);outline:none}
+.icon-btn:hover{background:rgba(201,168,76,0.2);border-color:var(--gold);transform:scale(1.08)}
+.top-icons select{background:rgba(201,168,76,0.08);border:1px solid var(--border);color:var(--gold-light);padding:6px 10px;border-radius:8px;cursor:pointer;font-family:'Jost',sans-serif;font-size:.76rem;transition:var(--transition);outline:none}
+.top-icons select:hover{background:rgba(201,168,76,0.18);border-color:var(--gold)}
+
+/* ── PAGE HERO ── */
+.page-hero{padding-top:var(--header-h);background:radial-gradient(ellipse 70% 60% at 10% 50%,rgba(139,34,82,0.22) 0%,transparent 60%),radial-gradient(ellipse 55% 45% at 90% 40%,rgba(201,168,76,0.1) 0%,transparent 60%),linear-gradient(160deg,#08031a 0%,#140830 60%,#0f0820 100%);position:relative;overflow:hidden}
+body.light .page-hero{background:radial-gradient(ellipse 70% 60% at 10% 50%,rgba(139,34,82,0.08) 0%,transparent 60%),linear-gradient(160deg,#f0e6d3 0%,#ede4d4 100%)}
+#beads{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.page-hero-inner{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:70px 5% 60px;text-align:center}
+.page-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.66rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;animation:fadeUp .8s ease both}
+.page-eyebrow::before,.page-eyebrow::after{content:'';width:24px;height:1px;background:var(--gold);opacity:.5}
+.page-hero h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:300;line-height:1.15;margin-bottom:16px;animation:fadeUp .8s ease .1s both}
+.page-hero h2 em,.section-title em,.cta-box h3 em{font-style:italic;color:var(--gold-light);background:linear-gradient(100deg,var(--gold-light) 35%,#fff 50%,var(--gold-light) 65%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sheen 6s linear infinite}
+body.light .page-hero h2 em,body.light .section-title em,body.light .cta-box h3 em{background:linear-gradient(100deg,#8b2252 35%,#c9a84c 50%,#8b2252 65%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text}
+@keyframes sheen{to{background-position:-250% 0}}
+.page-hero p{font-size:.95rem;color:var(--text-muted);max-width:500px;margin:0 auto;line-height:1.85;animation:fadeUp .8s ease .2s both}
+.hero-divider{position:relative;z-index:1;height:1px;width:100%;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.25}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* scroll reveal */
+.rv{opacity:0;translate:0 34px;transition:opacity .8s ease,translate .8s cubic-bezier(.2,.8,.2,1),transform .2s ease-out,border-color .4s,box-shadow .4s}
+.rv.in{opacity:1;translate:0 0}
+
+/* ── SERVICES GRID ── */
+.services-section{max-width:1100px;margin:0 auto;padding:90px 5% 60px}
+.section-head{text-align:center;margin-bottom:64px}
+.section-tag{font-size:.66rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:block}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:300;line-height:1.2}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.service-card{display:block;text-decoration:none;color:inherit;background:linear-gradient(160deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:20px;padding:40px 32px 60px;position:relative;overflow:hidden;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px))}
+.service-card::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.07),transparent 70%);transition:var(--transition)}
+.service-card::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(300px circle at var(--mx,50%) var(--my,50%),rgba(201,168,76,.13),transparent 60%);opacity:0;transition:opacity .3s}
+.service-card:hover{--ty:-8px;border-color:rgba(201,168,76,0.4);box-shadow:0 24px 55px rgba(0,0,0,0.4),0 0 0 1px rgba(201,168,76,0.1)}
+.service-card:hover::before{transform:scale(1.5)}
+.service-card:hover::after{opacity:1}
+.service-icon{width:54px;height:54px;border-radius:14px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:var(--gold);margin-bottom:24px;transition:var(--transition);position:relative;z-index:1}
+.service-card:hover .service-icon{background:rgba(201,168,76,0.2);border-color:var(--gold);box-shadow:0 0 20px rgba(201,168,76,0.2);transform:rotate(-8deg) scale(1.1)}
+.service-icon i{transition:transform .5s}
+.service-card:hover .service-icon i{animation:wiggle .7s ease}
+@keyframes wiggle{25%{transform:rotate(-14deg)}50%{transform:rotate(12deg)}75%{transform:rotate(-6deg)}}
+.service-card h4{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;margin-bottom:12px;letter-spacing:.5px;position:relative;z-index:1;transition:color .4s}
+.service-card:hover h4{color:var(--gold-light)}
+.service-card p{font-size:.87rem;color:var(--text-muted);line-height:1.8;position:relative;z-index:1}
+.card-arrow{position:absolute;bottom:24px;right:28px;width:30px;height:30px;border-radius:50%;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.72rem;opacity:0;transform:translateX(-6px);transition:var(--transition);z-index:1}
+.service-card:hover .card-arrow{opacity:1;transform:translateX(0)}
+.card-line{position:absolute;left:0;bottom:0;height:3px;width:0;background:linear-gradient(90deg,var(--rose),var(--gold),var(--gold-light));transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.service-card:hover .card-line{width:100%}
+
+/* ── PROCESS STRIP ── */
+.process-strip{background:rgba(201,168,76,0.02);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 5%}
+.process-inner{max-width:1100px;margin:0 auto}
+.process-inner .section-head{margin-bottom:52px}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.process-steps::before{content:'';position:absolute;top:28px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,var(--rose),var(--gold),var(--gold-light));opacity:.55;transform:scaleX(0);transform-origin:left;transition:transform 2.4s cubic-bezier(.4,0,.2,1) .2s}
+.process-steps.run::before{transform:scaleX(1)}
+.process-step{text-align:center;padding:0 20px;position:relative}
+.step-num{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:var(--gold-light);margin:0 auto 20px;position:relative;z-index:1;transition:var(--transition)}
+.process-step.lit .step-num{background:rgba(201,168,76,0.15);border-color:var(--gold);box-shadow:0 0 22px rgba(201,168,76,0.25);animation:stepPop .7s cubic-bezier(.3,1.6,.5,1)}
+@keyframes stepPop{from{transform:scale(.6)}}
+.process-step:hover .step-num{background:rgba(201,168,76,0.25);border-color:var(--gold);box-shadow:0 0 26px rgba(201,168,76,0.3);transform:translateY(-4px)}
+.process-step h5{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;margin-bottom:8px;letter-spacing:.5px;opacity:.5;transition:opacity .6s}
+.process-step p{font-size:.82rem;color:var(--text-muted);line-height:1.7;opacity:.6;transition:opacity .6s}
+.process-step.lit h5,.process-step.lit p{opacity:1}
+
+/* ── CTA STRIP ── */
+.cta-strip{max-width:1100px;margin:0 auto;padding:80px 5%;text-align:center}
+.cta-box{background:linear-gradient(135deg,rgba(139,34,82,0.2),rgba(201,168,76,0.08)),var(--surface);border:1px solid var(--border);border-radius:24px;padding:70px 60px;position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.1),transparent 70%);animation:drift 9s ease-in-out infinite alternate}
+.cta-box::after{content:'';position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(139,34,82,0.12),transparent 70%);animation:drift 11s ease-in-out infinite alternate-reverse}
+@keyframes drift{to{transform:translate(-40px,30px) scale(1.3)}}
+.spot{position:absolute;inset:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(201,168,76,.12),transparent 60%);opacity:0;transition:opacity .4s}
+.cta-box:hover .spot{opacity:1}
+.cta-eyebrow{font-size:.66rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block;position:relative;z-index:1}
+.cta-box h3{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:300;margin-bottom:14px;position:relative;z-index:1}
+.cta-box p{font-size:.9rem;color:var(--text-muted);max-width:460px;margin:0 auto 36px;line-height:1.8;position:relative;z-index:1}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+.btn-primary,.btn-ghost{position:relative;overflow:hidden;padding:13px 34px;border-radius:40px;font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:transform .25s ease-out,box-shadow .4s,background .4s,border-color .4s}
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--deep);font-weight:700;border:none;box-shadow:0 8px 28px rgba(201,168,76,0.35)}
+.btn-primary:hover{box-shadow:0 14px 36px rgba(201,168,76,0.5)}
+.btn-ghost{background:transparent;border:1px solid rgba(201,168,76,0.4);color:var(--gold-light);font-weight:500}
+.btn-ghost:hover{background:rgba(201,168,76,0.1);border-color:var(--gold)}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.4);transform:scale(0);animation:ripple .6s ease-out forwards;pointer-events:none}
+@keyframes ripple{to{transform:scale(2.6);opacity:0}}
+
+#toTop{position:fixed;right:22px;bottom:26px;z-index:900;width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:linear-gradient(135deg,var(--surface),var(--surface2));color:var(--gold-light);cursor:pointer;opacity:0;transform:translateY(20px) scale(.8);pointer-events:none;transition:var(--transition);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+#toTop.show{opacity:1;transform:none;pointer-events:auto}
+#toTop:hover{background:var(--gold);color:var(--deep);transform:translateY(-4px)}
+
+/* ── FOOTER ── */
+footer{background:#07030f;border-top:1px solid rgba(201,168,76,0.1);padding:64px 5% 28px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:48px;margin-bottom:44px;max-width:1100px;margin-left:auto;margin-right:auto}
+.footer-brand h2{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;color:var(--gold-light);letter-spacing:2px;margin-bottom:13px}
+.footer-brand p{font-size:.83rem;color:var(--text-muted);line-height:1.85;margin-bottom:24px}
+.socials{display:flex;gap:10px}
+.socials a{width:36px;height:36px;border-radius:50%;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.18);display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-size:.85rem;text-decoration:none;transition:var(--transition)}
+.socials a:hover{background:var(--gold);color:var(--deep);transform:translateY(-3px) rotate(-8deg)}
+.footer-col h4{font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.footer-col a,.footer-col p{display:block;color:var(--text-muted);text-decoration:none;font-size:.82rem;margin-bottom:9px;transition:var(--transition);line-height:1.6}
+.footer-col a:hover{color:var(--gold-light);padding-left:4px}
+.footer-bottom{padding-top:20px;border-top:1px solid rgba(201,168,76,0.08);display:flex;justify-content:space-between;font-size:.74rem;color:var(--text-muted);max-width:1100px;margin:0 auto}
+
+/* ── RESPONSIVE ── */
+@media (max-width:992px){.services-grid{grid-template-columns:repeat(2,1fr)}.process-steps{grid-template-columns:repeat(2,1fr);gap:40px}.process-steps::before{display:none}.footer-grid{grid-template-columns:1fr 1fr;gap:28px}}
+@media (max-width:768px){header{flex-direction:column;height:auto;padding:14px 5%;gap:12px}nav{flex-wrap:wrap;justify-content:center;gap:14px}.page-hero{padding-top:150px}.cta-box{padding:50px 28px}.cta-btns{flex-direction:column;align-items:center}}
+@media (max-width:520px){.services-grid{grid-template-columns:1fr}.process-steps{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}.rv{opacity:1;translate:0 0}.process-steps::before{transform:none}.process-step h5,.process-step p{opacity:1}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<!-- ── HEADER ── -->
+<header id="mainHeader">
+    <a href="index.html" class="logo-container">
+        <div class="logo-circle">DT</div>
+        <h1>Dala Threads</h1>
+    </a>
+    <nav>
+        <a href="index.html" id="navHome">Home</a>
+        <a href="product.html" id="navProduct">Our Products</a>
+        <a href="contact.html" id="navContact">Contact Us</a>
+        <a href="ourservices.html" id="navServices" class="active">Services</a>
+        <a href="login.html" id="navLogin">Sign In</a>
+    </nav>
+    <div class="top-icons">
+        <select id="language" onchange="applyTranslations(this.value)">
+            <option value="en">EN</option>
+            <option value="rw">RW</option>
+        </select>
+        <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
+        </button>
+    </div>
+</header>
+
+<!-- ── PAGE HERO ── -->
+<div class="page-hero">
+    <canvas id="beads"></canvas>
+    <div class="page-hero-inner">
+        <div class="page-eyebrow" id="pageEyebrow">What we offer</div>
+        <h2 id="pageTitle">Crafted with Care, <em>Delivered with Love</em></h2>
+        <p id="pageSubtitle">From custom designs to worldwide shipping — every service we offer is built around bringing you the finest handmade experience.</p>
+    </div>
+    <div class="hero-divider"></div>
+</div>
+
+<!-- ── SERVICES GRID ── -->
+<section class="services-section">
+    <div class="section-head rv">
+        <span class="section-tag" id="servTag">Everything we do</span>
+        <h2 class="section-title" id="servTitle">Our <em>Services</em></h2>
+    </div>
+
+    <div class="services-grid" id="servicesGrid">
+
+        <a class="service-card rv" href="contact.html">
+            <div class="service-icon"><i class="fa-solid fa-pen-nib"></i></div>
+            <h4 id="s1_t">Custom Design</h4>
+            <p id="s1_d">We bring your vision to life with custom colors, patterns, and sizes. Every detail is handcrafted to match exactly what you imagine.</p>
+            <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div><span class="card-line"></span>
+        </a>
+
+        <a class="service-card rv" href="contact.html">
+            <div class="service-icon"><i class="fa-solid fa-truck"></i></div>
+            <h4 id="s2_t">Worldwide Shipping</h4>
+            <p id="s2_d">From Kigali to the world, we deliver with care and love. Every package is wrapped beautifully and tracked every step of the way.</p>
+            <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div><span class="card-line"></span>
+        </a>
+
+        <a class="service-card rv" href="contact.html">
+            <div class="service-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+            <h4 id="s3_t">Repair Services</h4>
+            <p id="s3_d">Handmade quality we stand behind. We offer professional repairs for all our bags to keep your piece looking beautiful for years.</p>
+            <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div><span class="card-line"></span>
+        </a>
+
+        <a class="service-card rv" href="contact.html">
+            <div class="service-icon"><i class="fa-solid fa-gift"></i></div>
+            <h4 id="s4_t">Gift Wrapping</h4>
+            <p id="s4_d">Make any occasion special with our luxury gift wrapping service. Perfect for weddings, birthdays, and celebrations of all kinds.</p>
+            <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div><span class="card-line"></span>
+        </a>
+
+        <a class="service-card rv" href="contact.html">
+            <div class="service-icon"><i class="fa-solid fa-handshake"></i></div>
+            <h4 id="s5_t">Wholesale Orders</h4>
+            <p id="s5_d">Looking to stock our pieces in your boutique? We offer wholesale pricing for bulk orders with a minimum of 10 pieces per design.</p>
+            <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div><span class="card-line"></span>
+        </a>
+
+        <a class="service-card rv" href="contact.html">
+            <div class="service-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <h4 id="s6_t">Beading Workshops</h4>
+            <p id="s6_d">Learn the art of beading directly from our craftswomen. We host in-person and virtual workshops to share our cultural heritage.</p>
+            <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div><span class="card-line"></span>
+        </a>
+
+    </div>
+</section>
+
+<!-- ── PROCESS STRIP ── -->
+<div class="process-strip">
+    <div class="process-inner">
+        <div class="section-head rv">
+            <span class="section-tag" id="processTag">How it works</span>
+            <h2 class="section-title" id="processTitle">Our <em>Process</em></h2>
+        </div>
+        <div class="process-steps" id="processSteps">
+            <div class="process-step">
+                <div class="step-num">01</div>
+                <h5 id="step1_t">Choose or Design</h5>
+                <p id="step1_d">Browse our collection or share your custom design idea with us.</p>
+            </div>
+            <div class="process-step">
+                <div class="step-num">02</div>
+                <h5 id="step2_t">We Handcraft</h5>
+                <p id="step2_d">Our artisans bead every piece by hand with care and precision.</p>
+            </div>
+            <div class="process-step">
+                <div class="step-num">03</div>
+                <h5 id="step3_t">Quality Check</h5>
+                <p id="step3_d">Every piece is inspected to ensure it meets our high standards.</p>
+            </div>
+            <div class="process-step">
+                <div class="step-num">04</div>
+                <h5 id="step4_t">Delivered to You</h5>
+                <p id="step4_d">Your order is beautifully packaged and shipped straight to your door.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── CTA STRIP ── -->
+<div class="cta-strip">
+    <div class="cta-box rv" id="ctaBox">
+        <div class="spot"></div>
+        <span class="cta-eyebrow" id="ctaEyebrow">Ready to get started?</span>
+        <h3 id="ctaTitle">Let's Create Something <em>Beautiful</em></h3>
+        <p id="ctaText">Whether you want a piece from our collection or a fully custom design — we're here to make it happen.</p>
+        <div class="cta-btns">
+            <a href="product.html" class="btn-primary" id="ctaBtn1">Shop the Collection</a>
+            <a href="contact.html" class="btn-ghost" id="ctaBtn2">Request Custom Order</a>
+        </div>
+    </div>
+</div>
+
+<button id="toTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h2>Dala Threads</h2>
+            <p>Handmade in Rwanda with love. We bring elegance to your wardrobe through traditional beadwork passed down through generations.</p>
+            <div class="socials">
+                <a href="https://www.instagram.com/dala_threads" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://wa.me/250795013119" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/search/top?q=buhendwa%20daniella" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.tiktok.com/@dala_threads" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <a href="index.html">Home</a>
+            <a href="product.html">Our Products</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="ourservices.html">Services</a>
+            <a href="login.html">Sign In</a>
+        </div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <a href="#">Shipping Policy</a>
+            <a href="#">Return Policy</a>
+            <a href="#">FAQs</a>
+            <a href="#">Size Guide</a>
+        </div>
+        <div class="footer-col">
+            <h4>Contact</h4>
+            <p><i class="fa-solid fa-location-dot" style="color:var(--gold);margin-right:6px;"></i>Ruyenzi, Kamonyi, Rwanda</p>
+            <p><i class="fa-brands fa-whatsapp" style="color:var(--gold);margin-right:6px;"></i>+250 795 013 119</p>
+            <p><i class="fa-solid fa-envelope" style="color:var(--gold);margin-right:6px;"></i>keybuhendwa0@gmail.com</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Dala Threads. All rights reserved.</span>
+        <span>Handmade with ♥ in Rwanda</span>
+    </div>
+</footer>
+
+<script src="js/dala-api.js"></script>
+<script src="js/dala-account.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hoverOK = matchMedia('(hover:hover)').matches;
+
+// ── HEADER SCROLL + PROGRESS + BACK TO TOP ───────────────────
+window.addEventListener('scroll', () => {
+    $('mainHeader').classList.toggle('scrolled', window.scrollY > 60);
+    const h = document.documentElement, max = h.scrollHeight - h.clientHeight;
+    $('progress').style.width = (max > 0 ? window.scrollY / max * 100 : 0) + '%';
+    $('toTop').classList.toggle('show', window.scrollY > 600);
+}, { passive: true });
+$('toTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+// ── THEME ────────────────────────────────────────────────────
+function toggleTheme() {
+    document.body.classList.toggle('light');
+    const isLight = document.body.classList.contains('light');
+    localStorage.setItem('dtTheme', isLight ? 'light' : 'dark');
+    $('themeIcon').className = isLight ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+}
+
+// ── SCROLL REVEAL (cards stagger by column) ──────────────────
+const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        const el = en.target; io.unobserve(el);
+        const i = [...el.parentElement.children].indexOf(el);
+        setTimeout(() => el.classList.add('in'), reduce ? 0 : (i % 3) * 120);
+    });
+}, { threshold: .12 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+// ── PROCESS: line draws across, steps light up one by one ────
+const steps = $('processSteps');
+new IntersectionObserver((entries, ob) => {
+    if (!entries[0].isIntersecting) return;
+    ob.disconnect();
+    steps.classList.add('run');
+    steps.querySelectorAll('.process-step').forEach((s, i) => setTimeout(() => s.classList.add('lit'), reduce ? 0 : 500 + i * 650));
+}, { threshold: .35 }).observe(steps);
+
+// ── SERVICE CARDS: tilt + light that follows the cursor ──────
+if (!reduce && hoverOK) {
+    const g = $('servicesGrid');
+    g.addEventListener('mousemove', e => {
+        const c = e.target.closest('.service-card'); if (!c) return;
+        const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        c.style.setProperty('--ry', ((x - .5) * 8) + 'deg'); c.style.setProperty('--rx', ((.5 - y) * 8) + 'deg');
+        c.style.setProperty('--mx', (x * 100) + '%'); c.style.setProperty('--my', (y * 100) + '%');
+    });
+    g.addEventListener('mouseout', e => {
+        const c = e.target.closest('.service-card');
+        if (c && !c.contains(e.relatedTarget)) { c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg'); }
+    });
+    // CTA: spotlight + magnetic buttons
+    const box = $('ctaBox');
+    box.addEventListener('mousemove', e => {
+        const r = box.getBoundingClientRect();
+        box.style.setProperty('--mx', (e.clientX - r.left) + 'px'); box.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+    document.querySelectorAll('.btn-primary,.btn-ghost').forEach(b => {
+        b.addEventListener('mousemove', e => {
+            const r = b.getBoundingClientRect();
+            b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .12}px,${(e.clientY - r.top - r.height / 2) * .3 - 2}px)`;
+        });
+        b.addEventListener('mouseleave', () => b.style.transform = '');
+    });
+}
+
+// ── RIPPLE ───────────────────────────────────────────────────
+document.addEventListener('pointerdown', e => {
+    const b = e.target.closest('.btn-primary,.btn-ghost');
+    if (!b) return;
+    const r = b.getBoundingClientRect(), s = Math.max(r.width, r.height), sp = document.createElement('span');
+    sp.className = 'ripple';
+    sp.style.cssText = `width:${s}px;height:${s}px;left:${e.clientX - r.left - s / 2}px;top:${e.clientY - r.top - s / 2}px`;
+    b.appendChild(sp); setTimeout(() => sp.remove(), 600);
+});
+
+// ── HERO BEADS (drift upward, avoid the cursor) ──────────────
+(function () {
+    const c = $('beads'); if (!c || reduce) return;
+    const hero = c.parentElement, x = c.getContext('2d'); let w, h, m = { x: -999, y: -999 }, pts = [];
+    const size = () => { w = c.width = c.offsetWidth; h = c.height = c.offsetHeight; };
+    size(); addEventListener('resize', size);
+    hero.addEventListener('mousemove', e => { const r = c.getBoundingClientRect(); m.x = e.clientX - r.left; m.y = e.clientY - r.top; });
+    hero.addEventListener('mouseleave', () => { m.x = m.y = -999; });
+    for (let i = 0; i < 40; i++) pts.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 2.2 + .6, v: Math.random() * .4 + .12, a: Math.random() * 6.28 });
+    (function loop() {
+        if (!document.hidden) {
+            x.clearRect(0, 0, w, h);
+            const light = document.body.classList.contains('light');
+            pts.forEach(p => {
+                p.y -= p.v; p.a += .01; p.x += Math.sin(p.a) * .3;
+                const dx = p.x - m.x, dy = p.y - m.y, d = Math.hypot(dx, dy);
+                if (d < 110) { p.x += dx / d * 2.2; p.y += dy / d * 2.2; }
+                if (p.y < -5) { p.y = h + 5; p.x = Math.random() * w; }
+                x.beginPath(); x.arc(p.x, p.y, p.r, 0, 7);
+                x.fillStyle = light ? `rgba(139,34,82,${.12 + p.r / 8})` : `rgba(232,201,122,${.15 + p.r / 6})`; x.fill();
+            });
+        }
+        requestAnimationFrame(loop);
+    })();
+})();
+
+// ── TRANSLATIONS ─────────────────────────────────────────────
+const T = {
+    en: {
+        eyebrow:"What we offer",
+        title:"Crafted with Care, <em>Delivered with Love</em>",
+        subtitle:"From custom designs to worldwide shipping — every service we offer is built around bringing you the finest handmade experience.",
+        servTag:"Everything we do", servTitle:"Our <em>Services</em>",
+        s1t:"Custom Design", s1d:"We bring your vision to life with custom colors, patterns, and sizes. Every detail is handcrafted to match exactly what you imagine.",
+        s2t:"Worldwide Shipping", s2d:"From Kigali to the world, we deliver with care and love. Every package is wrapped beautifully and tracked every step of the way.",
+        s3t:"Repair Services", s3d:"Handmade quality we stand behind. We offer professional repairs for all our bags to keep your piece looking beautiful for years.",
+        s4t:"Gift Wrapping", s4d:"Make any occasion special with our luxury gift wrapping service. Perfect for weddings, birthdays, and celebrations of all kinds.",
+        s5t:"Wholesale Orders", s5d:"Looking to stock our pieces in your boutique? We offer wholesale pricing for bulk orders with a minimum of 10 pieces per design.",
+        s6t:"Beading Workshops", s6d:"Learn the art of beading directly from our craftswomen. We host in-person and virtual workshops to share our cultural heritage.",
+        processTag:"How it works", processTitle:"Our <em>Process</em>",
+        step1t:"Choose or Design", step1d:"Browse our collection or share your custom design idea with us.",
+        step2t:"We Handcraft", step2d:"Our artisans bead every piece by hand with care and precision.",
+        step3t:"Quality Check", step3d:"Every piece is inspected to ensure it meets our high standards.",
+        step4t:"Delivered to You", step4d:"Your order is beautifully packaged and shipped straight to your door.",
+        ctaEyebrow:"Ready to get started?",
+        ctaTitle:"Let's Create Something <em>Beautiful</em>",
+        ctaText:"Whether you want a piece from our collection or a fully custom design — we're here to make it happen.",
+        ctaBtn1:"Shop the Collection", ctaBtn2:"Request Custom Order",
+        home:"Home", prod:"Our Products", cont:"Contact Us", serv:"Services", login:"Sign In"
+    },
+    rw: {
+        eyebrow:"Ibyo dutanga",
+        title:"Bikorwa n'Urukundo, <em>Bigatangwa n'Amahoro</em>",
+        subtitle:"Kuva ku bicuruzwa byihariye kugera ku rwego rw'isi — serivisi zacu zose zubatswe kugira ngo tugutange uburambe bwiza.",
+        servTag:"Ibyo dukora byose", servTitle:"Serivisi <em>Zacu</em>",
+        s1t:"Igicuruzwa Cyihariye", s1d:"Tugufasha gukora ibikapu mu mabara, imiterere, n'ingano wihinduye. Buri kuntu gikorwa bukoze nk'uko wabisabye.",
+        s2t:"Kohereza ku Isi Yose", s2d:"Kuva i Kigali kugera ku isi yose, turageza ibicuruzwa n'iyi n'urukundo. Buri kibike gipakiwe neza.",
+        s3t:"Serivisi yo Gusana", s3d:"Ibikapu bikorwa neza tubiregera. Dutanga gusana no gukora neza ibikapu byacu byose.",
+        s4t:"Gupakira Impano", s4d:"Gira umunsi w'iminsi mikuru wihariye ukoresheje serivisi yacu yo gupakira impano nziza.",
+        s5t:"Amatumwa Manini", s5d:"Ushaka kugurisha ibikapu byacu? Dutanga ibiciro by'ubucuruzi bunini ku matumwa yo hejuru ya 10.",
+        s6t:"Amashuri yo Gutunga Imisanga", s6d:"Menya ubuhanzi bwo gutunga imisanga bivuye ku bagore bacu b'inzobere. Dutanga amashuri yo gusangira umurage wacu.",
+        processTag:"Bikorwa gute", processTitle:"Inzira <em>Yacu</em>",
+        step1t:"Hitamo cyangwa Gushushanya", step1d:"Reba ibicuruzwa byacu cyangwa tuzanire igitekerezo cyawe cy'igicuruzwa cyihariye.",
+        step2t:"Turakora Nawe", step2d:"Inzobere zacu zitunga imisanga buri gicuruzwa bukoze neza.",
+        step3t:"Gusuzuma Ubuziranenge", step3d:"Buri gicuruzwa gisuzumwa kugira ngo gikore neza nk'uko twifuza.",
+        step4t:"Bigeza Aho Uri", step4d:"Itumba ryawe ripakiwe neza ryoherezwa hafi yawe.",
+        ctaEyebrow:"Witeguye gutangira?",
+        ctaTitle:"Reka Dukore Ikintu <em>Kibikira</em>",
+        ctaText:"Ushaka igicuruzwa cyacu cyangwa igicuruzwa cyihariye — turimo kukufasha.",
+        ctaBtn1:"Reba Ibicuruzwa", ctaBtn2:"Saba Igicuruzwa Cyihariye",
+        home:"Ahabanza", prod:"Ibicuruzwa", cont:"Twandikire", serv:"Serivisi", login:"Injira"
+    }
+};
+
+function applyTranslations(l) {
+    const t = T[l] || T.en;
+    localStorage.setItem('dtLang', l);
+    document.documentElement.lang = l;
+    $('pageEyebrow').textContent  = t.eyebrow;
+    $('pageTitle').innerHTML      = t.title;
+    $('pageSubtitle').textContent = t.subtitle;
+    $('servTag').textContent      = t.servTag;
+    $('servTitle').innerHTML      = t.servTitle;
+    for (let i = 1; i <= 6; i++) { $(`s${i}_t`).textContent = t[`s${i}t`]; $(`s${i}_d`).textContent = t[`s${i}d`]; }
+    $('processTag').textContent   = t.processTag;
+    $('processTitle').innerHTML   = t.processTitle;
+    for (let i = 1; i <= 4; i++) { $(`step${i}_t`).textContent = t[`step${i}t`]; $(`step${i}_d`).textContent = t[`step${i}d`]; }
+    $('ctaEyebrow').textContent   = t.ctaEyebrow;
+    $('ctaTitle').innerHTML       = t.ctaTitle;
+    $('ctaText').textContent      = t.ctaText;
+    $('ctaBtn1').textContent      = t.ctaBtn1;
+    $('ctaBtn2').textContent      = t.ctaBtn2;
+    $('navHome').textContent      = t.home;
+    $('navProduct').textContent   = t.prod;
+    $('navContact').textContent   = t.cont;
+    $('navServices').textContent  = t.serv;
+    $('navLogin').textContent     = t.login;
+}
+
+// ── INIT ─────────────────────────────────────────────────────
+window.onload = () => {
+    if (localStorage.getItem('dtTheme') === 'light') {
+        document.body.classList.add('light');
+        $('themeIcon').className = 'fa-solid fa-moon';
+    }
+    const savedLang = localStorage.getItem('dtLang') || 'en';
+    $('language').value = savedLang;
+    applyTranslations(savedLang);
+};
+</script>
+</body>
+</html>

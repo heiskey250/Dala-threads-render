@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dala Threads | Sign In</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8c97a;
+            --deep: #0f0820;
+            --surface: #160d2a;
+            --surface2: #1e1235;
+            --rose: #8b2252;
+            --text: #f5ede0;
+            --text-muted: rgba(245,237,224,0.5);
+            --border: rgba(201,168,76,0.15);
+            --transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+            --header-h: 72px;
+        }
+
+        body.light {
+            --deep: #f7f1e8;
+            --surface: #ede4d4;
+            --surface2: #e4d8c4;
+            --text: #1a0f2e;
+            --text-muted: rgba(26,15,46,0.5);
+            --border: rgba(139,34,82,0.15);
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+
+        body {
+            font-family:'Jost',sans-serif;
+            background:var(--deep);
+            color:var(--text);
+            overflow-x:hidden;
+            min-height:100vh;
+            transition:background 0.4s,color 0.4s;
+        }
+
+        ::-webkit-scrollbar { width:5px; }
+        ::-webkit-scrollbar-track { background:var(--deep); }
+        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:3px; }
+
+        /* ── HEADER ── */
+        header {
+            position:fixed; top:0; width:100%; height:var(--header-h);
+            z-index:1000; padding:0 5%;
+            display:flex; align-items:center; justify-content:space-between;
+            background:rgba(15,8,32,0.8);
+            backdrop-filter:blur(24px);
+            border-bottom:1px solid var(--border);
+            transition:var(--transition);
+        }
+
+        body.light header { background:rgba(247,241,232,0.9); }
+
+        header.scrolled {
+            height:60px;
+            background:rgba(8,3,20,0.97);
+            box-shadow:0 4px 30px rgba(0,0,0,0.4);
+        }
+
+        .logo-container {
+            display:flex; align-items:center; gap:12px;
+            text-decoration:none; color:var(--text);
+        }
+
+        .logo-circle {
+            width:40px; height:40px; border-radius:50%;
+            background:linear-gradient(135deg,var(--gold),var(--rose));
+            display:flex; align-items:center; justify-content:center;
+            font-family:'Cormorant Garamond',serif;
+            font-size:0.95rem; font-weight:600; color:#fff;
+            box-shadow:0 0 18px rgba(201,168,76,0.35);
+            flex-shrink:0;
+        }
+
+        .logo-container h1 {
+            font-family:'Cormorant Garamond',serif;
+            font-size:1.45rem; font-weight:400; letter-spacing:2px;
+            background:linear-gradient(90deg,var(--gold-light),var(--text));
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip:text;
+        }
+
+        nav { display:flex; gap:26px; align-items:center; }
+
+        nav a {
+            color:var(--text-muted); text-decoration:none;
+            font-size:0.78rem; letter-spacing:1.8px;
+            text-transform:uppercase; font-weight:500;
+            transition:var(--transition); position:relative;
+        }
+
+        nav a::after {
+            content:''; position:absolute; bottom:-3px; left:0;
+            width:0; height:1px; background:var(--gold);
+            transition:var(--transition);
+        }
+
+        nav a:hover { color:var(--gold-light); }
+        nav a:hover::after { width:100%; }
+
+        .top-icons { display:flex; gap:10px; align-items:center; }
+
+        .icon-btn {
+            width:36px; height:36px; border-radius:50%;
+            background:rgba(201,168,76,0.08);
+            border:1px solid var(--border);
+            display:flex; align-items:center; justify-content:center;
+            color:var(--gold-light); font-size:0.85rem;
+            cursor:pointer; transition:var(--transition); outline:none;
+        }
+
+        .icon-btn:hover {
+            background:rgba(201,168,76,0.2);
+            border-color:var(--gold); transform:scale(1.08);
+        }
+
+        .top-icons select {
+            background:rgba(201,168,76,0.08);
+            border:1px solid var(--border);
+            color:var(--gold-light); padding:6px 10px;
+            border-radius:8px; cursor:pointer;
+            font-family:'Jost',sans-serif;
+            font-size:0.76rem; transition:var(--transition); outline:none;
+        }
+
+        /* ── BACKGROUND ── */
+        .bg-wrap {
+            position:fixed; inset:0; z-index:0;
+            background:
+                radial-gradient(ellipse 70% 60% at 15% 40%, rgba(139,34,82,0.2) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 85% 60%, rgba(201,168,76,0.1) 0%, transparent 60%),
+                linear-gradient(160deg,#08031a 0%,#140830 55%,#0f0820 100%);
+        }
+
+        body.light .bg-wrap {
+            background:
+                radial-gradient(ellipse 70% 60% at 15% 40%, rgba(139,34,82,0.06) 0%, transparent 60%),
+                linear-gradient(160deg,#f0e6d3 0%,#ede4d4 100%);
+        }
+
+        canvas#beads {
+            position:fixed; inset:0; z-index:1; pointer-events:none;
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .page-wrap {
+            position:relative; z-index:2;
+            min-height:100vh;
+            display:flex; align-items:center; justify-content:center;
+            padding:calc(var(--header-h) + 40px) 5% 60px;
+        }
+
+        /* ── AVATAR STAGE ── */
+        .avatar-stage {
+            display:flex; flex-direction:column; align-items:center;
+            gap:0;
+        }
+
+        /* Avatar figure */
+        .avatar-wrap {
+            position:relative; cursor:pointer;
+            margin-bottom:-2px;
+            animation:floatAvatar 4s ease-in-out infinite;
+            z-index:10;
+        }
+
+        @keyframes floatAvatar {
+            0%,100% { transform:translateY(0); }
+            50% { transform:translateY(-10px); }
+        }
+
+        .avatar {
+            width:110px; height:110px;
+            position:relative;
+        }
+
+        /* SVG avatar — elegant woman with beaded accessories */
+        .avatar svg {
+            width:100%; height:100%;
+            filter:drop-shadow(0 8px 24px rgba(201,168,76,0.35));
+        }
+
+        /* Briefcase / box that opens */
+        .case-wrap {
+            position:relative;
+            width:340px;
+            cursor:pointer;
+        }
+
+        .case-svg {
+            width:100%; display:block;
+        }
+
+        /* ── FORM CARD ── */
+        .form-card {
+            width:420px;
+            background:linear-gradient(160deg,var(--surface),var(--surface2));
+            border:1px solid var(--border);
+            border-radius:0 0 22px 22px;
+            padding:0 38px 38px;
+            box-shadow:0 30px 70px rgba(0,0,0,0.5);
+            position:relative; overflow:hidden;
+            /* starts closed */
+            max-height:0; opacity:0;
+            transition:max-height 0.7s cubic-bezier(0.4,0,0.2,1),
+                        opacity 0.5s ease,
+                        padding 0.5s ease;
+        }
+
+        .form-card.open {
+            max-height:700px; opacity:1;
+            padding:32px 38px 38px;
+        }
+
+        .form-card::before {
+            content:'';
+            position:absolute; top:0; left:0; right:0; height:3px;
+            background:linear-gradient(90deg,var(--rose),var(--gold),var(--gold-light));
+            background-size:200%;
+            animation:shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer { 0%{background-position:0%} 100%{background-position:200%} }
+
+        .form-card::after {
+            content:'';
+            position:absolute; top:-50px; right:-50px;
+            width:160px; height:160px; border-radius:50%;
+            background:radial-gradient(circle,rgba(201,168,76,0.07),transparent 70%);
+            pointer-events:none;
+        }
+
+        /* ── TABS ── */
+        .tabs {
+            display:flex; gap:0; margin-bottom:28px;
+            border-bottom:1px solid var(--border);
+        }
+
+        .tab {
+            flex:1; padding:11px 0; text-align:center;
+            font-size:0.72rem; letter-spacing:2px; text-transform:uppercase;
+            font-weight:600; color:var(--text-muted);
+            cursor:pointer; transition:var(--transition);
+            border-bottom:2px solid transparent;
+            margin-bottom:-1px;
+        }
+
+        .tab.active {
+            color:var(--gold-light);
+            border-bottom-color:var(--gold);
+        }
+
+        .tab:hover { color:var(--text); }
+
+        /* ── FORM PANELS ── */
+        .form-panel { display:none; }
+        .form-panel.active { display:block; }
+
+        .form-title {
+            font-family:'Cormorant Garamond',serif;
+            font-size:1.6rem; font-weight:300;
+            margin-bottom:5px; letter-spacing:0.5px;
+        }
+
+        .form-sub {
+            font-size:0.82rem; color:var(--text-muted);
+            margin-bottom:24px; line-height:1.65;
+        }
+
+        .form-group {
+            display:flex; flex-direction:column; gap:5px;
+            margin-bottom:14px; position:relative;
+        }
+
+        .form-group label {
+            font-size:0.64rem; letter-spacing:2.5px;
+            text-transform:uppercase; color:var(--text-muted);
+        }
+
+        .input-wrap {
+            position:relative;
+        }
+
+        .input-wrap i {
+            position:absolute; left:14px; top:50%;
+            transform:translateY(-50%);
+            font-size:0.8rem; color:var(--text-muted);
+            transition:var(--transition); pointer-events:none;
+        }
+
+        .input-wrap input {
+            width:100%;
+            padding:12px 14px 12px 38px;
+            background:rgba(255,255,255,0.04);
+            border:1px solid var(--border);
+            border-radius:10px;
+            color:var(--text);
+            font-family:'Jost',sans-serif;
+            font-size:0.88rem; outline:none;
+            transition:var(--transition);
+        }
+
+        .input-wrap input::placeholder { color:var(--text-muted); font-size:0.83rem; }
+
+        .input-wrap input:focus {
+            border-color:var(--gold);
+            background:rgba(201,168,76,0.05);
+            box-shadow:0 0 0 3px rgba(201,168,76,0.08);
+        }
+
+        .input-wrap input:focus + i,
+        .input-wrap:focus-within i { color:var(--gold); }
+
+        /* eye toggle */
+        .eye-btn {
+            position:absolute; right:12px; top:50%;
+            transform:translateY(-50%);
+            background:none; border:none; cursor:pointer;
+            color:var(--text-muted); font-size:0.8rem;
+            transition:var(--transition); padding:4px;
+        }
+
+        .eye-btn:hover { color:var(--gold); }
+
+        /* two col */
+        .form-row {
+            display:grid; grid-template-columns:1fr 1fr; gap:12px;
+        }
+
+        /* forgot */
+        .forgot {
+            text-align:right; margin-top:-8px; margin-bottom:14px;
+        }
+
+        .forgot a {
+            font-size:0.72rem; color:var(--text-muted);
+            text-decoration:none; transition:var(--transition);
+        }
+
+        .forgot a:hover { color:var(--gold); }
+
+        /* submit btn */
+        .btn-submit {
+            width:100%; padding:13px;
+            border-radius:11px; border:none; cursor:pointer;
+            font-family:'Jost',sans-serif; font-weight:700;
+            font-size:0.78rem; letter-spacing:2px;
+            text-transform:uppercase;
+            background:linear-gradient(135deg,var(--gold),var(--gold-light));
+            color:var(--deep); transition:var(--transition);
+            display:flex; align-items:center; justify-content:center; gap:9px;
+            margin-top:6px;
+        }
+
+        .btn-submit:hover {
+            transform:translateY(-2px);
+            box-shadow:0 12px 30px rgba(201,168,76,0.4);
+        }
+
+        .btn-submit:active { transform:translateY(0); }
+
+        /* divider */
+        .or-divider {
+            display:flex; align-items:center; gap:14px;
+            margin:18px 0; font-size:0.7rem;
+            color:var(--text-muted); text-transform:uppercase; letter-spacing:2px;
+        }
+
+        .or-divider::before,.or-divider::after {
+            content:''; flex:1; height:1px; background:var(--border);
+        }
+
+        /* social login */
+        .social-logins { display:flex; gap:10px; }
+
+        .btn-social {
+            flex:1; padding:10px; border-radius:9px;
+            border:1px solid var(--border);
+            background:rgba(255,255,255,0.03);
+            color:var(--text-muted); font-size:0.82rem;
+            cursor:pointer; transition:var(--transition);
+            display:flex; align-items:center; justify-content:center; gap:7px;
+            font-family:'Jost',sans-serif;
+        }
+
+        .btn-social:hover {
+            border-color:var(--gold);
+            background:rgba(201,168,76,0.07);
+            color:var(--text);
+        }
+
+        /* bottom switch link */
+        .switch-link {
+            text-align:center; margin-top:20px;
+            font-size:0.8rem; color:var(--text-muted);
+        }
+
+        .switch-link a {
+            color:var(--gold); text-decoration:none;
+            font-weight:600; cursor:pointer;
+            transition:var(--transition);
+        }
+
+        .switch-link a:hover { color:var(--gold-light); }
+
+        /* ── OPEN HINT ── */
+        .open-hint {
+            font-size:0.64rem; letter-spacing:3px; text-transform:uppercase;
+            color:rgba(201,168,76,0.5); margin-top:12px;
+            text-align:center; animation:pulse 2s infinite;
+        }
+
+        @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+        /* ── SUCCESS ── */
+        .success-overlay {
+            display:none; text-align:center; padding:20px 0;
+        }
+
+        .success-overlay.show { display:block; }
+
+        .success-icon {
+            width:60px; height:60px; border-radius:50%;
+            background:rgba(201,168,76,0.12);
+            border:1px solid var(--gold);
+            display:flex; align-items:center; justify-content:center;
+            margin:0 auto 16px; font-size:1.4rem; color:var(--gold);
+        }
+
+        .success-overlay h4 {
+            font-family:'Cormorant Garamond',serif;
+            font-size:1.6rem; font-weight:300; margin-bottom:8px;
+        }
+
+        .success-overlay p {
+            font-size:0.84rem; color:var(--text-muted); line-height:1.7;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width:768px) {
+            header { flex-direction:column; height:auto; padding:14px 5%; gap:12px; }
+            nav { flex-wrap:wrap; justify-content:center; gap:14px; }
+            .form-card, .case-wrap { width:92vw; max-width:420px; }
+            .avatar { width:86px; height:86px; }
+            .form-row { grid-template-columns:1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-wrap"></div>
+<canvas id="beads"></canvas>
+
+<!-- ── HEADER ── -->
+<header id="mainHeader">
+    <a href="index.html" class="logo-container">
+        <div class="logo-circle">DT</div>
+        <h1>Dala Threads</h1>
+    </a>
+    <nav>
+        <a href="index.html" id="navHome">Home</a>
+        <a href="product.html" id="navProduct">Our Products</a>
+        <a href="contact.html" id="navContact">Contact Us</a>
+        <a href="ourservices.html" id="navServices">Services</a>
+    </nav>
+    <div class="top-icons">
+        <select id="language" onchange="applyTranslations(this.value)">
+            <option value="en">EN</option>
+            <option value="rw">RW</option>
+        </select>
+        <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
+        </button>
+    </div>
+</header>
+
+<!-- ── MAIN ── -->
+<div class="page-wrap">
+    <div class="avatar-stage">
+
+        <!-- Avatar -->
+        <div class="avatar-wrap" onclick="openCase()" title="Click to sign in">
+            <div class="avatar">
+                <svg viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Glow ring -->
+                    <circle cx="55" cy="55" r="52" fill="rgba(201,168,76,0.07)" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+                    <!-- Body / dress -->
+                    <ellipse cx="55" cy="82" rx="26" ry="22" fill="#8b2252"/>
+                    <!-- Dress detail gradient -->
+                    <ellipse cx="55" cy="82" rx="26" ry="22" fill="url(#dressGrad)" opacity="0.6"/>
+                    <!-- Neck -->
+                    <rect x="50" y="58" width="10" height="10" rx="4" fill="#d4956a"/>
+                    <!-- Head -->
+                    <ellipse cx="55" cy="46" rx="16" ry="18" fill="#d4956a"/>
+                    <!-- Hair -->
+                    <ellipse cx="55" cy="34" rx="16" ry="11" fill="#1a0a0a"/>
+                    <ellipse cx="55" cy="32" rx="13" ry="8" fill="#2a1010"/>
+                    <!-- Hair highlight -->
+                    <ellipse cx="50" cy="30" rx="5" ry="3" fill="#3d1818" opacity="0.5"/>
+                    <!-- Eyes -->
+                    <ellipse cx="49" cy="46" rx="2.5" ry="2.8" fill="#1a0a0a"/>
+                    <ellipse cx="61" cy="46" rx="2.5" ry="2.8" fill="#1a0a0a"/>
+                    <!-- Eye shine -->
+                    <circle cx="50" cy="45" r="0.8" fill="white"/>
+                    <circle cx="62" cy="45" r="0.8" fill="white"/>
+                    <!-- Eyebrows -->
+                    <path d="M46 41.5 Q49 40 52 41.5" stroke="#1a0a0a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                    <path d="M58 41.5 Q61 40 64 41.5" stroke="#1a0a0a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                    <!-- Nose -->
+                    <path d="M54 50 Q55 52 56 50" stroke="#b07050" stroke-width="1" fill="none" stroke-linecap="round"/>
+                    <!-- Lips -->
+                    <path d="M50 55 Q55 58 60 55" stroke="#c0405a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                    <path d="M51 55 Q55 56.5 59 55" stroke="#e06070" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+                    <!-- Beaded necklace -->
+                    <path d="M44 63 Q55 70 66 63" stroke="#c9a84c" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <circle cx="47" cy="64.5" r="2" fill="#e8c97a"/>
+                    <circle cx="52" cy="67" r="2.2" fill="#c9a84c"/>
+                    <circle cx="55" cy="68" r="2.4" fill="#e8c97a"/>
+                    <circle cx="58" cy="67" r="2.2" fill="#c9a84c"/>
+                    <circle cx="63" cy="64.5" r="2" fill="#e8c97a"/>
+                    <!-- Beaded earrings left -->
+                    <line x1="39" y1="46" x2="39" y2="56" stroke="#c9a84c" stroke-width="1"/>
+                    <circle cx="39" cy="48" r="1.8" fill="#e8c97a"/>
+                    <circle cx="39" cy="52" r="1.8" fill="#c9a84c"/>
+                    <circle cx="39" cy="56" r="2" fill="#8b2252"/>
+                    <!-- Beaded earrings right -->
+                    <line x1="71" y1="46" x2="71" y2="56" stroke="#c9a84c" stroke-width="1"/>
+                    <circle cx="71" cy="48" r="1.8" fill="#e8c97a"/>
+                    <circle cx="71" cy="52" r="1.8" fill="#c9a84c"/>
+                    <circle cx="71" cy="56" r="2" fill="#8b2252"/>
+                    <!-- Arms -->
+                    <path d="M29 72 Q33 85 38 90" stroke="#d4956a" stroke-width="7" stroke-linecap="round" fill="none"/>
+                    <path d="M81 72 Q77 85 72 90" stroke="#d4956a" stroke-width="7" stroke-linecap="round" fill="none"/>
+                    <!-- Beaded bracelet left -->
+                    <circle cx="35" cy="88" r="3" fill="#c9a84c"/>
+                    <circle cx="39" cy="91" r="2.5" fill="#e8c97a"/>
+                    <!-- Beaded bracelet right -->
+                    <circle cx="75" cy="88" r="3" fill="#c9a84c"/>
+                    <circle cx="71" cy="91" r="2.5" fill="#e8c97a"/>
+                    <!-- Dress beads -->
+                    <circle cx="49" cy="75" r="1.5" fill="#e8c97a" opacity="0.7"/>
+                    <circle cx="55" cy="73" r="1.5" fill="#c9a84c" opacity="0.7"/>
+                    <circle cx="61" cy="75" r="1.5" fill="#e8c97a" opacity="0.7"/>
+                    <circle cx="52" cy="80" r="1.5" fill="#c9a84c" opacity="0.6"/>
+                    <circle cx="58" cy="80" r="1.5" fill="#e8c97a" opacity="0.6"/>
+
+                    <defs>
+                        <radialGradient id="dressGrad" cx="50%" cy="30%" r="70%">
+                            <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.3"/>
+                            <stop offset="100%" stop-color="#8b2252" stop-opacity="0"/>
+                        </radialGradient>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Open hint -->
+        <div class="open-hint" id="openHint">✦ Click to open ✦</div>
+
+        <!-- The case / form card -->
+        <div class="form-card" id="formCard">
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" id="tabSignIn" onclick="switchTab('signin')">Sign In</div>
+                <div class="tab" id="tabRegister" onclick="switchTab('register')">New Account</div>
+            </div>
+
+            <!-- ── SIGN IN PANEL ── -->
+            <div class="form-panel active" id="panelSignIn">
+                <div class="form-title" id="siTitle">Welcome Back</div>
+                <div class="form-sub" id="siSub">Sign in to your Dala Threads account.</div>
+
+                <form onsubmit="handleSignIn(event)">
+                    <div class="form-group">
+                        <label id="siEmailLabel">Email Address</label>
+                        <div class="input-wrap">
+                            <input type="email" id="siEmail" placeholder="you@example.com" required>
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="siPassLabel">Password</label>
+                        <div class="input-wrap">
+                            <input type="password" id="siPass" placeholder="••••••••" required>
+                            <i class="fa-solid fa-lock"></i>
+                            <button type="button" class="eye-btn" onclick="togglePass('siPass',this)"><i class="fa-solid fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <div class="forgot"><a href="#" id="forgotLink">Forgot password?</a></div>
+                    <button type="submit" class="btn-submit" id="siBtn">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        <span id="siBtnText">Sign In</span>
+                    </button>
+                </form>
+
+                <div class="or-divider" id="siOr">or continue with</div>
+                <div class="social-logins">
+                    <button class="btn-social" onclick="socialLogin('Google')"><i class="fa-brands fa-google"></i> Google</button>
+                    <button class="btn-social" onclick="socialLogin('Facebook')"><i class="fa-brands fa-facebook"></i> Facebook</button>
+                </div>
+
+                <div class="switch-link">
+                    <span id="siSwitchText">Don't have an account?</span>
+                    <a onclick="switchTab('register')" id="siSwitchLink"> Create one</a>
+                </div>
+
+                <!-- Success -->
+                <div class="success-overlay" id="siSuccess">
+                    <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+                    <h4 id="siSuccessTitle">Welcome back!</h4>
+                    <p id="siSuccessText">You're signed in. Redirecting to your atelier…</p>
+                </div>
+            </div>
+
+            <!-- ── REGISTER PANEL ── -->
+            <div class="form-panel" id="panelRegister">
+                <div class="form-title" id="regTitle">Create Account</div>
+                <div class="form-sub" id="regSub">Join the Dala Threads community today.</div>
+
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label id="regFnLabel">First Name</label>
+                            <div class="input-wrap">
+                                <input type="text" id="regFn" placeholder="First name" required>
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="regLnLabel">Last Name</label>
+                            <div class="input-wrap">
+                                <input type="text" id="regLn" placeholder="Last name" required>
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="regEmailLabel">Email Address</label>
+                        <div class="input-wrap">
+                            <input type="email" id="regEmail" placeholder="you@example.com" required>
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="regPhoneLabel">Phone / WhatsApp</label>
+                        <div class="input-wrap">
+                            <input type="tel" id="regPhone" placeholder="+250 7xx xxx xxx">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="regPassLabel">Password</label>
+                        <div class="input-wrap">
+                            <input type="password" id="regPass" placeholder="Min. 8 characters" required minlength="8">
+                            <i class="fa-solid fa-lock"></i>
+                            <button type="button" class="eye-btn" onclick="togglePass('regPass',this)"><i class="fa-solid fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="regPass2Label">Confirm Password</label>
+                        <div class="input-wrap">
+                            <input type="password" id="regPass2" placeholder="Repeat password" required>
+                            <i class="fa-solid fa-lock"></i>
+                            <button type="button" class="eye-btn" onclick="togglePass('regPass2',this)"><i class="fa-solid fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit" id="regBtn">
+                        <i class="fa-solid fa-star"></i>
+                        <span id="regBtnText">Create Account</span>
+                    </button>
+                </form>
+
+                <div class="switch-link">
+                    <span id="regSwitchText">Already have an account?</span>
+                    <a onclick="switchTab('signin')" id="regSwitchLink"> Sign in</a>
+                </div>
+
+                <!-- Success -->
+                <div class="success-overlay" id="regSuccess">
+                    <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+                    <h4 id="regSuccessTitle">Account Created!</h4>
+                    <p id="regSuccessText">Welcome to Dala Threads! Redirecting you now…</p>
+                </div>
+            </div>
+
+        </div><!-- /form-card -->
+    </div><!-- /avatar-stage -->
+</div><!-- /page-wrap -->
+
+<script src="js/dala-api.js"></script>
+<script>
+// ── BEADS CANVAS ─────────────────────────────────────────────
+(function() {
+    const canvas = document.getElementById('beads');
+    const ctx = canvas.getContext('2d');
+    const colors = ['#c9a84c','#e8c97a','#8b2252','#d4a0b5','#f0d080'];
+    let particles = [];
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function init() {
+        resize();
+        particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 4 + 2,
+                speed: Math.random() * 0.4 + 0.1,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                opacity: Math.random() * 0.4 + 0.1
+            });
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.y -= p.speed;
+            if (p.y < -10) p.y = canvas.height + 10;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.opacity;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        });
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', init);
+    init(); draw();
+})();
+
+// ── OPEN CASE ────────────────────────────────────────────────
+let caseOpen = false;
+
+function openCase() {
+    if (caseOpen) return;
+    caseOpen = true;
+    document.getElementById('formCard').classList.add('open');
+    document.getElementById('openHint').style.opacity = '0';
+    // stop avatar floating
+    document.querySelector('.avatar-wrap').style.animation = 'none';
+    document.querySelector('.avatar-wrap').style.transform = 'translateY(-4px)';
+}
+
+// ── TAB SWITCH ───────────────────────────────────────────────
+function switchTab(tab) {
+    document.getElementById('tabSignIn').classList.toggle('active', tab === 'signin');
+    document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+    document.getElementById('panelSignIn').classList.toggle('active', tab === 'signin');
+    document.getElementById('panelRegister').classList.toggle('active', tab === 'register');
+}
+
+// ── PASSWORD TOGGLE ──────────────────────────────────────────
+function togglePass(id, btn) {
+    const input = document.getElementById(id);
+    const icon  = btn.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fa-solid fa-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'fa-solid fa-eye';
+    }
+}
+
+// ── SIGN IN ──────────────────────────────────────────────────
+function formError(sel, msg) {
+    const form = document.querySelector(sel);
+    let el = form.querySelector('.form-error');
+    if (!el) { el = document.createElement('div'); el.className = 'form-error'; el.style.cssText = 'color:#ea4335;font-size:.82rem;margin:0 0 12px;text-align:center'; form.insertBefore(el, form.querySelector('button[type=submit]')); }
+    el.textContent = msg;
+}
+
+function goAfterLogin(user) {
+    // administrators land on the dashboard; customers go back to the page they came from (or the shop)
+    const next = new URLSearchParams(location.search).get('next');
+    const back = /^[a-z]+\.html$/i.test(next || '') ? next : 'index.html';
+    window.location.href = user.role === 'admin' ? DalaAPI.base + '/admin.html' : back;
+}
+// already signed in? skip this page
+if (DalaAPI.isLoggedIn()) DalaAPI.me().then(goAfterLogin).catch(() => {});
+
+async function handleSignIn(e) {
+    e.preventDefault();
+    const btn = document.getElementById('siBtn');
+    const original = btn.innerHTML;
+    formError('#panelSignIn form', '');
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+    btn.disabled = true;
+    try {
+        const user = await DalaAPI.login(document.getElementById('siEmail').value.trim(), document.getElementById('siPass').value);
+        document.querySelector('#panelSignIn form').style.display = 'none';
+        document.querySelectorAll('#panelSignIn .or-divider, #panelSignIn .social-logins, #panelSignIn .switch-link').forEach(el => el.style.display = 'none');
+        document.getElementById('siSuccess').classList.add('show');
+        setTimeout(() => goAfterLogin(user), 1500);
+    } catch (err) {
+        btn.innerHTML = original;
+        btn.disabled = false;
+        formError('#panelSignIn form', err.message);
+    }
+}
+
+// ── REGISTER ─────────────────────────────────────────────────
+async function handleRegister(e) {
+    e.preventDefault();
+    const pass  = document.getElementById('regPass').value;
+    const pass2 = document.getElementById('regPass2').value;
+    if (pass !== pass2) {
+        document.getElementById('regPass2').style.borderColor = '#ea4335';
+        document.getElementById('regPass2').focus();
+        formError('#panelRegister form', 'The two passwords do not match.');
+        return;
+    }
+    const btn = document.getElementById('regBtn');
+    const original = btn.innerHTML;
+    formError('#panelRegister form', '');
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+    btn.disabled = true;
+    try {
+        const user = await DalaAPI.register({
+            firstName: document.getElementById('regFn').value.trim(),
+            lastName:  document.getElementById('regLn').value.trim(),
+            email:     document.getElementById('regEmail').value.trim(),
+            phone:     document.getElementById('regPhone').value.trim(),
+            password:  pass,
+        });
+        document.querySelector('#panelRegister form').style.display = 'none';
+        document.querySelectorAll('#panelRegister .switch-link').forEach(el => el.style.display = 'none');
+        document.getElementById('regSuccess').classList.add('show');
+        setTimeout(() => goAfterLogin(user), 1800);
+    } catch (err) {
+        btn.innerHTML = original;
+        btn.disabled = false;
+        formError('#panelRegister form', err.message);
+    }
+}
+
+// ── SOCIAL LOGIN ─────────────────────────────────────────────
+function socialLogin(provider) {
+    alert(`${provider} login coming soon!`);
+}
+
+// ── HEADER SCROLL ────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+    document.getElementById('mainHeader').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── THEME ────────────────────────────────────────────────────
+function toggleTheme() {
+    document.body.classList.toggle('light');
+    const isLight = document.body.classList.contains('light');
+    localStorage.setItem('dtTheme', isLight ? 'light' : 'dark');
+    document.getElementById('themeIcon').className = isLight ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+}
+
+// ── TRANSLATIONS ─────────────────────────────────────────────
+const T = {
+    en: {
+        openHint:'✦ Click to open ✦',
+        tabSI:'Sign In', tabReg:'New Account',
+        siTitle:'Welcome Back', siSub:'Sign in to your Dala Threads account.',
+        siEmailLabel:'Email Address', siPassLabel:'Password',
+        forgotLink:'Forgot password?', siBtnText:'Sign In',
+        siOr:'or continue with',
+        siSwitchText:"Don't have an account?", siSwitchLink:' Create one',
+        siSuccessTitle:'Welcome back!', siSuccessText:"You're signed in. Redirecting to your atelier…",
+        regTitle:'Create Account', regSub:'Join the Dala Threads community today.',
+        regFnLabel:'First Name', regLnLabel:'Last Name',
+        regEmailLabel:'Email Address', regPhoneLabel:'Phone / WhatsApp',
+        regPassLabel:'Password', regPass2Label:'Confirm Password',
+        regBtnText:'Create Account',
+        regSwitchText:'Already have an account?', regSwitchLink:' Sign in',
+        regSuccessTitle:'Account Created!', regSuccessText:'Welcome to Dala Threads! Redirecting you now…',
+        home:'Home', prod:'Our Products', cont:'Contact Us', serv:'Services'
+    },
+    rw: {
+        openHint:'✦ Kanda ugufungure ✦',
+        tabSI:'Injira', tabReg:'Konti Nshya',
+        siTitle:'Murakaza Neza', siSub:'Injira muri konti yawe ya Dala Threads.',
+        siEmailLabel:'Imeyili', siPassLabel:'Ijambo ry\'ibanga',
+        forgotLink:'Wibagiwe ijambo ry\'ibanga?', siBtnText:'Injira',
+        siOr:'cyangwa ukoresheje',
+        siSwitchText:'Nta konti ufite?', siSwitchLink:' Iyandikishe',
+        siSuccessTitle:'Warasubiriye!', siSuccessText:'Winjiye neza. Turagugezaho…',
+        regTitle:'Fungura Konti', regSub:'Injira mu muryango wa Dala Threads.',
+        regFnLabel:'Izina rya mbere', regLnLabel:'Izina ry\'umuryango',
+        regEmailLabel:'Imeyili', regPhoneLabel:'Telefone / WhatsApp',
+        regPassLabel:'Ijambo ry\'ibanga', regPass2Label:'Ponovera ijambo ry\'ibanga',
+        regBtnText:'Fungura Konti',
+        regSwitchText:'Ufite konti?', regSwitchLink:' Injira',
+        regSuccessTitle:'Konti Yafunguwe!', regSuccessText:'Murakaza neza muri Dala Threads!',
+        home:'Ahabanza', prod:'Ibicuruzwa', cont:'Twandikire', serv:'Serivisi'
+    }
+};
+
+function applyTranslations(l) {
+    const t = T[l] || T.en;
+    localStorage.setItem('dtLang', l);
+    document.getElementById('openHint').textContent        = t.openHint;
+    document.getElementById('tabSignIn').textContent       = t.tabSI;
+    document.getElementById('tabRegister').textContent     = t.tabReg;
+    document.getElementById('siTitle').textContent         = t.siTitle;
+    document.getElementById('siSub').textContent           = t.siSub;
+    document.getElementById('siEmailLabel').textContent    = t.siEmailLabel;
+    document.getElementById('siPassLabel').textContent     = t.siPassLabel;
+    document.getElementById('forgotLink').textContent      = t.forgotLink;
+    document.getElementById('siBtnText').textContent       = t.siBtnText;
+    document.getElementById('siOr').textContent            = t.siOr;
+    document.getElementById('siSwitchText').textContent    = t.siSwitchText;
+    document.getElementById('siSwitchLink').textContent    = t.siSwitchLink;
+    document.getElementById('siSuccessTitle').textContent  = t.siSuccessTitle;
+    document.getElementById('siSuccessText').textContent   = t.siSuccessText;
+    document.getElementById('regTitle').textContent        = t.regTitle;
+    document.getElementById('regSub').textContent          = t.regSub;
+    document.getElementById('regFnLabel').textContent      = t.regFnLabel;
+    document.getElementById('regLnLabel').textContent      = t.regLnLabel;
+    document.getElementById('regEmailLabel').textContent   = t.regEmailLabel;
+    document.getElementById('regPhoneLabel').textContent   = t.regPhoneLabel;
+    document.getElementById('regPassLabel').textContent    = t.regPassLabel;
+    document.getElementById('regPass2Label').textContent   = t.regPass2Label;
+    document.getElementById('regBtnText').textContent      = t.regBtnText;
+    document.getElementById('regSwitchText').textContent   = t.regSwitchText;
+    document.getElementById('regSwitchLink').textContent   = t.regSwitchLink;
+    document.getElementById('regSuccessTitle').textContent = t.regSuccessTitle;
+    document.getElementById('regSuccessText').textContent  = t.regSuccessText;
+    document.getElementById('navHome').textContent         = t.home;
+    document.getElementById('navProduct').textContent      = t.prod;
+    document.getElementById('navContact').textContent      = t.cont;
+    document.getElementById('navServices').textContent     = t.serv;
+}
+
+// ── INIT ─────────────────────────────────────────────────────
+window.onload = () => {
+    if (localStorage.getItem('dtTheme') === 'light') {
+        document.body.classList.add('light');
+        document.getElementById('themeIcon').className = 'fa-solid fa-moon';
+    }
+    const savedLang = localStorage.getItem('dtLang') || 'en';
+    document.getElementById('language').value = savedLang;
+    applyTranslations(savedLang);
+};
+</script>
+</body>
+</html>

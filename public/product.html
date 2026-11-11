@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dala Threads | Our Collection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--gold:#c9a84c;--gold-light:#e8c97a;--deep:#0f0820;--surface:#160d2a;--surface2:#1e1235;--rose:#8b2252;--text:#f5ede0;--text-muted:rgba(245,237,224,0.5);--border:rgba(201,168,76,0.15);--whatsapp:#25D366;--email:#EA4335;--ussd:#9b59b6;--transition:all 0.4s cubic-bezier(0.4,0,0.2,1);--header-h:72px}
+body.light{--deep:#f7f1e8;--surface:#ede4d4;--surface2:#e4d8c4;--text:#1a0f2e;--text-muted:rgba(26,15,46,0.5);--border:rgba(139,34,82,0.15)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--deep);color:var(--text);overflow-x:hidden;transition:background .4s,color .4s}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--deep)}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+:focus-visible{outline:2px solid var(--gold-light);outline-offset:3px}
+
+/* scroll progress */
+#scrollBar{position:fixed;top:0;left:0;height:3px;width:0;z-index:1100;background:linear-gradient(90deg,var(--rose),var(--gold),var(--gold-light));box-shadow:0 0 10px rgba(201,168,76,.6)}
+
+/* ── HEADER ── */
+header{position:fixed;top:0;width:100%;height:var(--header-h);z-index:1000;padding:0 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(15,8,32,0.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:var(--transition)}
+body.light header{background:rgba(247,241,232,0.9)}
+header.scrolled{height:60px;background:rgba(8,3,20,0.97);box-shadow:0 4px 30px rgba(0,0,0,0.4)}
+body.light header.scrolled{background:rgba(247,241,232,0.98)}
+.logo-container{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+.logo-circle{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--rose));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:600;color:#fff;box-shadow:0 0 18px rgba(201,168,76,0.35);flex-shrink:0;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.logo-container:hover .logo-circle{transform:rotate(360deg) scale(1.08)}
+.logo-container h1{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;letter-spacing:2px;background:linear-gradient(90deg,var(--gold-light),var(--text));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+nav{display:flex;gap:26px;align-items:center}
+nav a{color:var(--text-muted);text-decoration:none;font-size:.78rem;letter-spacing:1.8px;text-transform:uppercase;font-weight:500;transition:var(--transition);position:relative}
+nav a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--gold);transition:var(--transition)}
+nav a:hover{color:var(--gold-light)}nav a:hover::after{width:100%}
+nav a.active{color:var(--gold-light)}nav a.active::after{width:100%}
+.top-icons{display:flex;gap:10px;align-items:center}
+.icon-btn{position:relative;overflow:hidden;width:36px;height:36px;border-radius:50%;background:rgba(201,168,76,0.08);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-size:.85rem;cursor:pointer;transition:var(--transition);outline:none}
+.icon-btn:hover{background:rgba(201,168,76,0.2);border-color:var(--gold);transform:scale(1.08)}
+.icon-btn.bump{animation:bump .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes bump{0%{transform:scale(1)}30%{transform:scale(1.35) rotate(-12deg)}60%{transform:scale(.92) rotate(8deg)}100%{transform:scale(1)}}
+#themeIcon{transition:transform .5s}
+.icon-btn:active #themeIcon{transform:rotate(180deg)}
+.search-wrap{position:relative;display:flex;align-items:center}
+.search-wrap i{position:absolute;left:12px;font-size:.78rem;color:var(--gold-light);pointer-events:none}
+#productSearch{background:rgba(201,168,76,0.08);border:1px solid var(--border);border-radius:20px;padding:8px 14px 8px 32px;color:var(--text);font-family:'Jost',sans-serif;font-size:.78rem;outline:none;width:140px;transition:var(--transition)}
+#productSearch::placeholder{color:var(--text-muted)}
+#productSearch:focus{width:190px;background:rgba(201,168,76,0.14);border-color:var(--gold);box-shadow:0 0 12px rgba(201,168,76,0.15)}
+.top-icons select{background:rgba(201,168,76,0.08);border:1px solid var(--border);color:var(--gold-light);padding:6px 10px;border-radius:8px;cursor:pointer;font-family:'Jost',sans-serif;font-size:.76rem;transition:var(--transition);outline:none}
+.top-icons select:hover{background:rgba(201,168,76,0.18);border-color:var(--gold)}
+.cart-wrap{position:relative}
+.cart-badge{position:absolute;top:-4px;right:-4px;background:var(--rose);color:#fff;font-size:9px;font-weight:700;width:16px;height:16px;border-radius:50%;display:none;align-items:center;justify-content:center;border:2px solid var(--deep);transition:transform .2s}
+
+/* ── CART DROPDOWN ── */
+#cart-dropdown{display:none;position:fixed;top:calc(var(--header-h) + 10px);right:5%;width:370px;background:linear-gradient(160deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:18px;padding:24px;box-shadow:0 30px 70px rgba(0,0,0,0.55);z-index:2000;animation:fadeDown .3s ease;max-height:80vh;overflow-y:auto}
+#cart-dropdown.active{display:block}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+#cart-dropdown h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--gold-light);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);letter-spacing:1px}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);overflow:hidden}
+.cart-item.new{animation:itemIn .45s cubic-bezier(.2,.8,.2,1)}
+.cart-item.out{animation:itemOut .26s ease forwards}
+@keyframes itemIn{from{opacity:0;transform:translateX(40px);background:rgba(201,168,76,.18)}to{opacity:1;transform:none}}
+@keyframes itemOut{to{opacity:0;transform:translateX(-40px);height:0;padding:0}}
+.cart-item span{font-size:.83rem}
+.cart-empty{list-style:none;text-align:center;padding:22px 0;font-size:.82rem;color:var(--text-muted)}
+.cart-empty i{display:block;font-size:1.6rem;color:var(--gold);opacity:.5;margin-bottom:8px}
+.remove-btn{background:none;color:var(--rose);border:none;cursor:pointer;font-size:.85rem;transition:var(--transition);padding:3px 6px}
+.remove-btn:hover{transform:scale(1.3) rotate(90deg)}
+.cart-total-row{display:flex;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:1rem;font-weight:600;color:var(--gold-light)}
+.cart-actions{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.checkout-btn{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;border-radius:10px;font-family:'Jost',sans-serif;font-weight:600;font-size:.78rem;cursor:pointer;border:none;transition:var(--transition);letter-spacing:1px;text-transform:uppercase;color:#fff;text-decoration:none;width:100%}
+.checkout-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.3)}
+.checkout-btn.email-btn{background:linear-gradient(135deg,#EA4335,#c0321f)}
+.checkout-btn.wa-btn{background:linear-gradient(135deg,#25D366,#1aad52)}
+.checkout-btn.ussd-btn{background:linear-gradient(135deg,#9b59b6,#7d3c98)}
+.ussd-hint{margin-top:2px;font-size:.7rem;line-height:1.6;color:var(--text-muted);text-align:center}
+.ussd-hint i{color:var(--ussd);margin-right:4px}
+.ussd-hint code{display:block;margin-top:5px;padding:6px;border-radius:8px;background:rgba(155,89,182,.12);border:1px dashed rgba(155,89,182,.5);color:var(--gold-light);font-size:.76rem;letter-spacing:.5px;cursor:pointer;transition:var(--transition)}
+.ussd-hint code:hover{background:rgba(155,89,182,.25)}
+
+/* ripple */
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(0);animation:ripple .6s ease-out forwards;pointer-events:none}
+@keyframes ripple{to{transform:scale(2.6);opacity:0}}
+
+/* ── PAGE HERO ── */
+.page-hero{padding-top:var(--header-h);background:radial-gradient(ellipse 70% 50% at 10% 50%,rgba(139,34,82,0.2) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 90% 50%,rgba(201,168,76,0.1) 0%,transparent 60%),linear-gradient(160deg,#08031a 0%,#140830 60%,#0f0820 100%);position:relative;overflow:hidden}
+body.light .page-hero{background:radial-gradient(ellipse 70% 50% at 10% 50%,rgba(139,34,82,0.08) 0%,transparent 60%),linear-gradient(160deg,#f0e6d3 0%,#ede4d4 100%)}
+#heroCanvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.page-hero-inner{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:60px 5% 50px;display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap}
+.page-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.66rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;animation:fadeUp .8s ease both}
+.page-eyebrow::before,.page-eyebrow::after{content:'';width:22px;height:1px;background:var(--gold);opacity:.5}
+.page-hero h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4vw,3.5rem);font-weight:300;line-height:1.15;animation:fadeUp .8s ease .1s both}
+.page-hero h2 em{font-style:italic;color:var(--gold-light);background:linear-gradient(100deg,var(--gold-light) 30%,#fff 50%,var(--gold-light) 70%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sheen 5s linear infinite}
+@keyframes sheen{to{background-position:-250% 0}}
+.page-hero p{font-size:.92rem;color:var(--text-muted);margin-top:12px;line-height:1.8;max-width:440px;animation:fadeUp .8s ease .2s both}
+.hero-stats{display:flex;gap:30px;margin-top:22px;animation:fadeUp .8s ease .3s both}
+.stat b{display:block;font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:400;color:var(--gold-light);line-height:1}
+.stat small{display:block;margin-top:4px;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted)}
+.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;animation:fadeUp .8s ease .3s both;max-width:520px}
+.filter-pill{position:relative;overflow:hidden;padding:8px 18px;border-radius:30px;font-family:'Jost',sans-serif;font-size:.72rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);background:rgba(201,168,76,0.06);color:var(--text-muted);transition:var(--transition)}
+.filter-pill:hover,.filter-pill.active{background:rgba(201,168,76,0.15);border-color:var(--gold);color:var(--gold-light)}
+.filter-pill.active{background:linear-gradient(135deg,rgba(201,168,76,0.25),rgba(201,168,76,0.1));transform:translateY(-2px)}
+.filter-pill .fa-heart{color:var(--rose);margin-right:4px}
+.hero-divider{position:relative;z-index:1;height:1px;width:100%;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.25}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── COLLECTION GRID ── */
+.collection{max-width:1400px;margin:0 auto;padding:56px 5% 80px}
+.collection-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px}
+.collection-count{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted)}
+.collection-count span{color:var(--gold-light);font-weight:600}
+.sort-select{background:rgba(201,168,76,0.08);border:1px solid var(--border);color:var(--text-muted);padding:7px 14px;border-radius:8px;cursor:pointer;font-family:'Jost',sans-serif;font-size:.74rem;outline:none;transition:var(--transition)}
+.sort-select:hover{border-color:var(--gold);color:var(--gold-light)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:24px}
+#noResults{display:none;text-align:center;padding:70px 20px;color:var(--text-muted)}
+#noResults.show{display:block;animation:fadeUp .5s ease}
+#noResults i{font-size:2.4rem;color:var(--gold);opacity:.5;margin-bottom:14px;display:block}
+#noResults h4{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--text)}
+
+/* ── PRODUCT CARD ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;position:relative;opacity:0;translate:0 34px;scale:.96;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px));transition:opacity .7s ease,translate .7s cubic-bezier(.2,.8,.2,1),scale .7s cubic-bezier(.2,.8,.2,1),transform .18s ease-out,border-color .4s,box-shadow .4s}
+.card.in{opacity:1;translate:0 0;scale:1}
+.card.hidden{display:none}
+.card.pop{animation:popIn .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes popIn{from{opacity:0;scale:.88}to{opacity:1;scale:1}}
+.card::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(201,168,76,.14),transparent 60%);opacity:0;transition:opacity .3s}
+.card:hover{--ty:-7px;border-color:rgba(201,168,76,0.4);box-shadow:0 22px 50px rgba(0,0,0,0.45),0 0 0 1px rgba(201,168,76,0.1)}
+.card:hover::before{opacity:1}
+.card-img-wrap{position:relative;overflow:hidden;aspect-ratio:4/3;cursor:zoom-in;background:linear-gradient(110deg,var(--surface2) 30%,var(--surface) 50%,var(--surface2) 70%);background-size:200% 100%;animation:shimmer 1.4s linear infinite}
+.card-img-wrap.loaded,.card-img-wrap.noimg{animation:none}
+@keyframes shimmer{to{background-position:-200% 0}}
+.card-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(0.4,0,0.2,1),opacity .6s;display:block;opacity:0}
+.card-img-wrap.loaded img{opacity:1}
+.card:hover .card-img-wrap img{transform:scale(1.07)}
+.img-fallback{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,var(--surface2),var(--surface));color:var(--gold);font-size:.68rem;letter-spacing:2px}
+.img-fallback i{font-size:2rem;opacity:.6}
+.card-img-wrap.noimg .img-fallback{display:flex}
+.card-img-wrap.noimg img{display:none}
+.card-img-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,4,24,0.7) 0%,rgba(10,4,24,0.05) 50%,transparent 100%);opacity:.5;transition:var(--transition);pointer-events:none}
+.card:hover .card-img-wrap::after{opacity:.85}
+.card-badge{position:absolute;top:13px;left:13px;z-index:2;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0f0820;font-size:.6rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:20px;overflow:hidden}
+.card-badge::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.7),transparent);animation:badgeShine 3.5s ease-in-out infinite}
+@keyframes badgeShine{0%,60%{left:-100%}100%{left:160%}}
+.card-price-tag{position:absolute;top:13px;right:13px;z-index:2;background:rgba(10,4,24,0.7);backdrop-filter:blur(10px);border:1px solid rgba(201,168,76,0.3);color:var(--gold-light);font-size:.74rem;font-weight:600;padding:4px 11px;border-radius:20px;font-family:'Cormorant Garamond',serif;letter-spacing:.5px}
+.card-overlay-action{position:absolute;bottom:0;left:0;right:0;z-index:3;padding:0 16px 18px;display:flex;gap:8px;transform:translateY(8px);opacity:0;transition:var(--transition)}
+.card:hover .card-overlay-action{transform:translateY(0);opacity:1}
+.btn-overlay-add,.btn-quick{position:relative;overflow:hidden;padding:10px;border-radius:9px;cursor:pointer;font-family:'Jost',sans-serif;font-size:.73rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;background:rgba(201,168,76,0.18);color:var(--gold-light);border:1px solid rgba(201,168,76,0.4);backdrop-filter:blur(12px);transition:var(--transition);display:flex;align-items:center;justify-content:center;gap:7px}
+.btn-overlay-add{flex:1}
+.btn-quick{width:40px}
+.btn-overlay-add:hover,.btn-quick:hover{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--deep);border-color:transparent}
+.card-body{padding:18px 20px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;letter-spacing:.4px;line-height:1.3}
+.card-tag{font-size:.64rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-top:2px}
+.card-actions{display:flex;gap:8px;align-items:center}
+.btn-add-inline,.btn-heart{position:relative;overflow:hidden;width:34px;height:34px;border-radius:50%;background:rgba(201,168,76,0.1);border:1px solid var(--border);color:var(--gold-light);display:flex;align-items:center;justify-content:center;font-size:.82rem;cursor:pointer;transition:var(--transition);flex-shrink:0;outline:none}
+.btn-add-inline:hover{background:var(--gold);color:var(--deep);border-color:transparent;transform:scale(1.12) rotate(90deg)}
+.btn-heart:hover{border-color:var(--rose);color:var(--rose);transform:scale(1.12)}
+.btn-heart.on{color:var(--rose);background:rgba(139,34,82,.15);border-color:var(--rose)}
+.btn-heart.beat{animation:beat .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes beat{0%{transform:scale(1)}40%{transform:scale(1.5)}100%{transform:scale(1)}}
+
+/* fly-to-cart dot */
+.fly{position:fixed;z-index:5000;width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--rose)) center/cover;border:2px solid var(--gold-light);box-shadow:0 8px 30px rgba(0,0,0,.5);pointer-events:none}
+
+/* ── QUICK VIEW ── */
+.qv{position:fixed;inset:0;z-index:4000;display:flex;align-items:center;justify-content:center;background:rgba(5,2,14,.78);backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.qv.open{opacity:1;visibility:visible}
+.qv-box{position:relative;display:grid;grid-template-columns:1.1fr 1fr;width:min(880px,92vw);max-height:90vh;background:linear-gradient(160deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:20px;overflow:hidden;transform:scale(.92) translateY(24px);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+.qv.open .qv-box{transform:none}
+.qv-img{position:relative;min-height:440px;background:var(--surface2)}
+.qv-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .2s,transform .5s}
+.qv-img img.swap{opacity:0;transform:scale(1.04)}
+.qv-nav{position:absolute;top:50%;translate:0 -50%;width:38px;height:38px;border-radius:50%;border:1px solid rgba(201,168,76,.4);background:rgba(10,4,24,.6);color:var(--gold-light);cursor:pointer;transition:var(--transition);z-index:2}
+.qv-nav:hover{background:var(--gold);color:var(--deep)}
+#qvPrev{left:12px}#qvNext{right:12px}
+.qv-close{position:absolute;top:14px;right:14px;z-index:3;width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:rgba(10,4,24,.6);color:var(--gold-light);cursor:pointer;transition:var(--transition)}
+.qv-close:hover{background:var(--rose);color:#fff;transform:rotate(90deg)}
+.qv-info{padding:44px 34px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+.qv-info h3{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;line-height:1.15}
+.qv-price{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--gold-light)}
+.qv-info p{font-size:.86rem;line-height:1.8;color:var(--text-muted);max-width:340px}
+.qv-count{font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted)}
+.btn-qv-add{position:relative;overflow:hidden;margin-top:8px;padding:13px;border:none;border-radius:11px;cursor:pointer;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#0f0820;font-family:'Jost',sans-serif;font-weight:600;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;transition:var(--transition)}
+.btn-qv-add:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(201,168,76,.35)}
+
+/* back to top */
+#toTop{position:fixed;right:22px;bottom:26px;z-index:900;width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:linear-gradient(135deg,var(--surface),var(--surface2));color:var(--gold-light);cursor:pointer;opacity:0;transform:translateY(20px) scale(.8);pointer-events:none;transition:var(--transition);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+#toTop.show{opacity:1;transform:none;pointer-events:auto}
+#toTop:hover{background:var(--gold);color:var(--deep);transform:translateY(-4px)}
+
+/* ── FOOTER ── */
+footer{background:#07030f;border-top:1px solid rgba(201,168,76,0.1);padding:64px 5% 28px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:48px;margin-bottom:44px;max-width:1400px;margin-left:auto;margin-right:auto}
+.footer-brand h2{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;color:var(--gold-light);letter-spacing:2px;margin-bottom:13px}
+.footer-brand p{font-size:.83rem;color:var(--text-muted);line-height:1.85;margin-bottom:24px}
+.socials{display:flex;gap:10px}
+.socials a{width:36px;height:36px;border-radius:50%;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.18);display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-size:.85rem;text-decoration:none;transition:var(--transition)}
+.socials a:hover{background:var(--gold);color:var(--deep);transform:translateY(-3px) rotate(-8deg)}
+.footer-col h4{font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.footer-col a,.footer-col p{display:block;color:var(--text-muted);text-decoration:none;font-size:.82rem;margin-bottom:9px;transition:var(--transition);line-height:1.6}
+.footer-col a:hover{color:var(--gold-light);padding-left:4px}
+.footer-bottom{padding-top:20px;border-top:1px solid rgba(201,168,76,0.08);display:flex;justify-content:space-between;font-size:.74rem;color:var(--text-muted);max-width:1400px;margin:0 auto}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);color:var(--text);padding:12px 24px;border-radius:50px;font-size:.82rem;box-shadow:0 10px 30px rgba(0,0,0,0.4);z-index:6000;transition:transform .4s cubic-bezier(0.4,0,0.2,1);display:flex;align-items:center;gap:10px;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast i{color:var(--gold)}
+
+/* ── RESPONSIVE ── */
+@media (max-width:992px){.grid{grid-template-columns:repeat(2,1fr);gap:18px}.footer-grid{grid-template-columns:1fr 1fr;gap:28px}nav a{font-size:.72rem;gap:18px}}
+@media (max-width:768px){header{flex-direction:column;height:auto;padding:14px 5%;gap:12px}nav{flex-wrap:wrap;justify-content:center;gap:14px}#cart-dropdown{width:90%;right:5%;left:5%;top:170px}.page-hero{padding-top:150px}.page-hero-inner{flex-direction:column;align-items:flex-start}.filter-bar{justify-content:flex-start}.qv-box{grid-template-columns:1fr;overflow-y:auto}.qv-img{min-height:300px}.qv-info{padding:26px}}
+@media (max-width:520px){.grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}.toast{white-space:normal;width:88%;text-align:center}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}.card{opacity:1;translate:0 0;scale:1}}
+</style>
+</head>
+<body>
+<div id="scrollBar"></div>
+
+<!-- ── HEADER ── -->
+<header id="mainHeader">
+    <a href="index.html" class="logo-container">
+        <div class="logo-circle">DT</div>
+        <h1>Dala Threads</h1>
+    </a>
+    <nav>
+        <a href="index.html" id="navHome">Home</a>
+        <a href="product.html" id="navProduct" class="active">Our Products</a>
+        <a href="contact.html" id="navContact">Contact Us</a>
+        <a href="ourservices.html" id="navServices">Services</a>
+        <a href="login.html" id="navLogin">Sign In</a>
+    </nav>
+    <div class="top-icons">
+        <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="productSearch" placeholder="Search bags…" onkeyup="filterProducts()">
+        </div>
+        <select id="language" onchange="applyTranslations(this.value)">
+            <option value="en">EN</option>
+            <option value="rw">RW</option>
+        </select>
+        <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
+        </button>
+        <div class="cart-wrap">
+            <button class="icon-btn" id="cartBtn" onclick="toggleCart()" aria-label="Open cart">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </button>
+            <span class="cart-badge" id="cartBadge">0</span>
+        </div>
+    </div>
+</header>
+
+<!-- ── CART DROPDOWN ── -->
+<div id="cart-dropdown">
+    <h3 id="cartTitle"><i class="fa-solid fa-bag-shopping" style="margin-right:8px;font-size:0.9rem;"></i>Your Shopping Bag</h3>
+    <ul id="cartItems" style="list-style:none;"></ul>
+    <div class="cart-total-row">
+        <span id="totalLabel">Total</span>
+        <span><span id="total">0</span> FRW</span>
+    </div>
+    <div class="cart-actions">
+        <button class="checkout-btn email-btn" onclick="orderViaGmail()">
+            <i class="fa-solid fa-envelope"></i> Order via Email
+        </button>
+        <button class="checkout-btn wa-btn" onclick="checkoutWhatsApp()">
+            <i class="fa-brands fa-whatsapp"></i> Order via WhatsApp
+        </button>
+        <a class="checkout-btn ussd-btn" id="ussdBtn" href="tel:*182*1*1*0795013119%23" onclick="return payUSSD(event)">
+            <i class="fa-solid fa-phone"></i> Pay via USSD
+        </a>
+        <div class="ussd-hint">
+            <i class="fa-solid fa-circle-info"></i><span id="ussdHintText">Amount is filled in for you. Just enter your PIN.</span>
+            <code id="ussdCode" title="Tap to copy">*182*1*1*0795013119#</code>
+        </div>
+    </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast">
+    <i class="fa-solid fa-check-circle" id="toastIcon"></i>
+    <span id="toastMsg">Added to cart</span>
+</div>
+
+<!-- ── QUICK VIEW ── -->
+<div class="qv" id="qv" aria-hidden="true">
+    <div class="qv-box" role="dialog" aria-modal="true" aria-labelledby="qvName">
+        <button class="qv-close" id="qvClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+        <div class="qv-img">
+            <img id="qvImg" alt="">
+            <button class="qv-nav" id="qvPrev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="qv-nav" id="qvNext" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <div class="qv-info">
+            <div class="qv-count" id="qvCount"></div>
+            <h3 id="qvName"></h3>
+            <div class="qv-price" id="qvPrice"></div>
+            <p>Handmade in Rwanda, bead by bead. Each piece is slightly unique, so yours will be one of a kind.</p>
+            <button class="btn-qv-add" id="qvAdd"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+        </div>
+    </div>
+</div>
+
+<button id="toTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+<!-- ── PAGE HERO ── -->
+<div class="page-hero">
+    <canvas id="heroCanvas"></canvas>
+    <div class="page-hero-inner">
+        <div class="page-hero-left">
+            <div class="page-eyebrow" id="pageEyebrow">Handmade in Rwanda</div>
+            <h2 id="galleryTitle">Our Full <em>Collection</em></h2>
+            <p id="gallerySubtitle">Every piece tells a story — crafted bead by bead with patience, tradition, and love.</p>
+            <div class="hero-stats">
+                <div class="stat"><b><span data-count="50" id="statPieces">0</span></b><small id="stPieces">Pieces</small></div>
+                <div class="stat"><b><span data-count="100">0</span>%</b><small id="stHand">Handmade</small></div>
+                <div class="stat"><b><span data-count="4">0</span></b><small id="stCats">Categories</small></div>
+            </div>
+        </div>
+        <div class="filter-bar" id="filterBar">
+            <button class="filter-pill active" onclick="filterByTag(this,'all')" id="tagAll">All</button>
+            <button class="filter-pill" onclick="filterByTag(this,'purse')" id="tagPurse">Purses</button>
+            <button class="filter-pill" onclick="filterByTag(this,'bag')" id="tagBag">Bags</button>
+            <button class="filter-pill" onclick="filterByTag(this,'backpack')" id="tagBackpack">Backpacks</button>
+            <button class="filter-pill" onclick="filterByTag(this,'clutch')" id="tagClutch">Clutches</button>
+            <button class="filter-pill" onclick="filterByTag(this,'saved')" id="tagSaved"><i class="fa-solid fa-heart"></i><span>Saved</span></button>
+        </div>
+    </div>
+    <div class="hero-divider"></div>
+</div>
+
+<!-- ── COLLECTION ── -->
+<section class="collection">
+    <div class="collection-meta">
+        <div class="collection-count" id="collCount">Showing <span>50</span> pieces</div>
+        <select class="sort-select" id="sortSelect" onchange="sortProducts()">
+            <option value="default">Sort: Default</option>
+            <option value="low">Price: Low → High</option>
+            <option value="high">Price: High → Low</option>
+            <option value="name">Name A → Z</option>
+        </select>
+    </div>
+
+    <!-- 50 cards are generated from the PRODUCTS list in the script below (bag1.jpg … bag50.jpg) -->
+    <div class="grid" id="productGrid"></div>
+
+    <div id="noResults">
+        <i class="fa-regular fa-face-frown-open"></i>
+        <h4 id="nrTitle">No pieces found</h4>
+        <p id="nrText">Try another search word or pick a different category.</p>
+    </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h2>Dala Threads</h2>
+            <p>Handmade in Rwanda with love. We bring elegance to your wardrobe through traditional beadwork passed down through generations.</p>
+            <div class="socials">
+                <a href="https://www.instagram.com/dala_threads" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://wa.me/250795013119" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/search/top?q=buhendwa%20daniella" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.tiktok.com/@dala_threads" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <a href="index.html">Home</a>
+            <a href="product.html">Our Products</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="ourservices.html">Services</a>
+            <a href="login.html">Sign In</a>
+        </div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <a href="#">Shipping Policy</a>
+            <a href="#">Return Policy</a>
+            <a href="#">FAQs</a>
+            <a href="#">Size Guide</a>
+        </div>
+        <div class="footer-col">
+            <h4>Contact Us</h4>
+            <p><i class="fa-solid fa-location-dot" style="color:var(--gold);margin-right:6px;"></i>Ruyenzi, Kamonyi, Rwanda</p>
+            <p><i class="fa-brands fa-whatsapp" style="color:var(--gold);margin-right:6px;"></i>+250 795 013 119</p>
+            <p><i class="fa-solid fa-envelope" style="color:var(--gold);margin-right:6px;"></i>keybuhendwa0@gmail.com</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Dala Threads. All rights reserved.</span>
+        <span>Handmade with ♥ in Rwanda</span>
+    </div>
+</footer>
+
+<script src="js/dala-api.js"></script>
+<script src="js/dala-account.js"></script>
+<script>
+const MOMO = '0795013119';           // MoMo number that receives payments
+const $ = id => document.getElementById(id);
+const fmt = n => n.toLocaleString();
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+// ── PRODUCTS: [name, price, tag, badge] — position in list = image number (bag1.jpg … bag50.jpg)
+const PRODUCTS = [
+ ['Classic Beaded Bag',25000,'bag','New'],['Elegant Bead Purse',30000,'purse','Popular'],['Luxury Handbag',40000,'bag'],
+ ['Petite Gold Purse',45000,'purse'],['Evening Clutch',48000,'clutch'],['Bridal Bead Bag',45000,'bag','Bridal'],
+ ['Royal Handbag',50000,'bag'],['Mini Beaded Tote',20000,'bag'],['Heritage Bag',40000,'bag'],
+ ['Triangle Bag',40000,'bag'],['Blue Bag',40000,'bag'],['Green Bag',40000,'bag'],
+ ['Elegant Bag',40000,'bag'],['Light-Blue Bag',40000,'bag'],['Classic Purse',40000,'purse'],
+ ['Occasional Bag',40000,'bag'],['White BackPack',40000,'backpack'],['Fashion BackPack',40000,'backpack'],
+ ['Mothers Bag',40000,'bag'],['Evening Bag',40000,'bag'],['Wedding Bag',40000,'bag','Bridal'],
+ ['Queen Purse',40000,'purse'],
+ // ── new pieces 23–50 ──
+ ['Sunset Beaded Tote',35000,'bag'],['Ruby Evening Clutch',46000,'clutch'],['Ivory Bridal Purse',42000,'purse','Bridal'],
+ ['Safari Backpack',42000,'backpack'],['Amber Handbag',38000,'bag'],['Midnight Clutch',50000,'clutch','New'],
+ ['Rose Petal Purse',32000,'purse'],['Kigali Weekender',55000,'bag','Popular'],['Savannah Bag',38000,'bag'],
+ ['Pearl Clutch',47000,'clutch'],['Teal Bead Backpack',44000,'backpack','New'],['Coral Mini Purse',28000,'purse'],
+ ['Golden Hour Bag',45000,'bag'],['Imigongo Pattern Bag',48000,'bag','Heritage'],['Lavender Purse',33000,'purse'],
+ ['Emerald Handbag',42000,'bag'],['Pink Blossom Bag',36000,'bag'],['Gala Night Clutch',52000,'clutch','New'],
+ ['Everyday Tote',30000,'bag'],['Campus Backpack',38000,'backpack'],['Crimson Purse',34000,'purse'],
+ ['Silver Thread Bag',46000,'bag'],['Mama Africa Bag',40000,'bag','Popular'],['Mini Cross-body Bag',26000,'bag'],
+ ['Royal Blue Clutch',49000,'clutch'],['Honey Gold Purse',37000,'purse'],['Rainbow Bead Bag',43000,'bag','New'],
+ ['Signature Collection Bag',60000,'bag','Premium']
+];
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let currentTag = 'all', lastAdded = null, prevTotal = 0, qvIndex = 0;
+let wish = new Set(JSON.parse(localStorage.getItem('dtWish') || '[]'));
+
+// ── TOAST ────────────────────────────────────────────────────
+let toastTimer;
+function toast(msg, icon='fa-check-circle') {
+    $('toastMsg').textContent = msg;
+    $('toastIcon').className = 'fa-solid ' + icon;
+    $('toast').classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => $('toast').classList.remove('show'), 2400);
+}
+function showToast(name) { toast(`"${name}" added to cart`); }
+
+// ── NUMBER COUNT-UP ──────────────────────────────────────────
+function countUp(el, to, from=0, dur=900) {
+    if (reduce || from === to) { el.textContent = fmt(to); return; }
+    const s = performance.now();
+    (function f(t) {
+        const p = Math.min((t - s) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = fmt(Math.round(from + (to - from) * e));
+        if (p < 1) requestAnimationFrame(f);
+    })(s);
+}
+
+// ── BUILD THE 50 CARDS ───────────────────────────────────────
+function buildGrid() {
+    $('productGrid').innerHTML = PRODUCTS.map((p, i) => {
+        const n = i + 1, [name, price, tag, badge] = p;
+        return `
+        <div class="card" data-price="${price}" data-name="${name}" data-tag="${tag}" data-index="${n}">
+            <div class="card-img-wrap">
+                <img src="bag${n}.jpg" alt="${name}" loading="lazy">
+                <div class="img-fallback"><i class="fa-solid fa-bag-shopping"></i><span>bag${n}.jpg</span></div>
+                ${badge ? `<div class="card-badge">${badge}</div>` : ''}
+                <div class="card-price-tag">${fmt(price)} FRW</div>
+                <div class="card-overlay-action">
+                    <button class="btn-overlay-add" data-add><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+                    <button class="btn-quick" data-view title="Quick view"><i class="fa-solid fa-expand"></i></button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div><div class="card-name">${name}</div><div class="card-tag">${tag}</div></div>
+                <div class="card-actions">
+                    <button class="btn-heart${wish.has(name) ? ' on' : ''}" data-heart title="Save"><i class="fa-${wish.has(name) ? 'solid' : 'regular'} fa-heart"></i></button>
+                    <button class="btn-add-inline" data-add title="Add to cart"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+
+    // image load states (skeleton shimmer → fade in, or placeholder if the file is missing)
+    document.querySelectorAll('.card-img-wrap img').forEach(img => {
+        const w = img.parentElement;
+        const ok = () => w.classList.add('loaded');
+        const bad = () => w.classList.add('noimg');
+        if (img.complete) (img.naturalWidth ? ok : bad)();
+        else { img.addEventListener('load', ok); img.addEventListener('error', bad); }
+    });
+
+    // scroll reveal, staggered by column
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+            if (!en.isIntersecting) return;
+            const c = en.target, col = [...c.parentElement.children].indexOf(c) % 4;
+            io.unobserve(c);
+            setTimeout(() => c.classList.add('in'), reduce ? 0 : col * 90);
+        });
+    }, { threshold: .08 });
+    document.querySelectorAll('#productGrid .card').forEach(c => io.observe(c));
+}
+
+// ── GRID EVENTS (add, wishlist, quick view, tilt) ────────────
+function bindGrid() {
+    const grid = $('productGrid');
+    grid.addEventListener('click', e => {
+        const card = e.target.closest('.card'); if (!card) return;
+        if (e.target.closest('[data-add]')) {
+            addToCart(card.dataset.name, +card.dataset.price, card);
+        } else if (e.target.closest('[data-heart]')) {
+            toggleWish(card, e.target.closest('[data-heart]'));
+        } else if (e.target.closest('[data-view]') || e.target.closest('.card-img-wrap')) {
+            openQV(card);
+        }
+    });
+    if (!reduce && matchMedia('(hover:hover)').matches) {
+        grid.addEventListener('mousemove', e => {
+            const c = e.target.closest('.card'); if (!c) return;
+            const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+            c.style.setProperty('--ry', ((x - .5) * 8) + 'deg');
+            c.style.setProperty('--rx', ((.5 - y) * 8) + 'deg');
+            c.style.setProperty('--mx', (x * 100) + '%');
+            c.style.setProperty('--my', (y * 100) + '%');
+        });
+        grid.addEventListener('mouseout', e => {
+            const c = e.target.closest('.card');
+            if (c && !c.contains(e.relatedTarget)) { c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg'); }
+        });
+    }
+}
+
+function toggleWish(card, btn) {
+    const name = card.dataset.name, on = !wish.has(name);
+    on ? wish.add(name) : wish.delete(name);
+    localStorage.setItem('dtWish', JSON.stringify([...wish]));
+    btn.classList.toggle('on', on);
+    btn.firstElementChild.className = `fa-${on ? 'solid' : 'regular'} fa-heart`;
+    btn.classList.remove('beat'); void btn.offsetWidth; btn.classList.add('beat');
+    toast(on ? `"${name}" saved` : `"${name}" removed from saved`, on ? 'fa-heart' : 'fa-heart-crack');
+    if (currentTag === 'saved') filterProducts();
+}
+
+// ── CART ─────────────────────────────────────────────────────
+function toggleCart() { $("cart-dropdown").classList.toggle("active"); }
+
+document.addEventListener('click', e => {
+    const d = $('cart-dropdown');
+    if (d.classList.contains('active') && !d.contains(e.target) && !e.target.closest('.cart-wrap') && !e.target.closest('[data-add]') && !e.target.closest('#qvAdd')) {
+        d.classList.remove('active');
+    }
+});
+
+function flyToCart(fromEl) {
+    if (reduce || !fromEl) return;
+    const r = (fromEl.querySelector('.card-img-wrap') || fromEl).getBoundingClientRect();
+    const t = $('cartBtn').getBoundingClientRect();
+    const img = fromEl.querySelector('img');
+    const dot = document.createElement('div');
+    dot.className = 'fly';
+    if (img && img.complete && img.naturalWidth) dot.style.backgroundImage = `url("${img.currentSrc || img.src}")`;
+    dot.style.left = (r.left + r.width / 2 - 35) + 'px';
+    dot.style.top = (r.top + r.height / 2 - 35) + 'px';
+    document.body.appendChild(dot);
+    const dx = t.left + t.width / 2 - (r.left + r.width / 2), dy = t.top + t.height / 2 - (r.top + r.height / 2);
+    dot.animate([
+        { transform: 'translate(0,0) scale(1)', opacity: 1 },
+        { transform: `translate(${dx * .5}px,${dy * .5 - 80}px) scale(.7)`, opacity: .95, offset: .5 },
+        { transform: `translate(${dx}px,${dy}px) scale(.15)`, opacity: .3 }
+    ], { duration: 750, easing: 'cubic-bezier(.5,0,.3,1)' }).onfinish = () => {
+        dot.remove();
+        const b = $('cartBtn'); b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump');
+    };
+}
+
+function addToCart(name, price, fromEl) {
+    const id = Date.now() * 1000 + Math.floor(Math.random() * 1000);
+    cart.push({ id, name, price });
+    lastAdded = id;
+    saveAndRefresh();
+    flyToCart(fromEl);
+    $("cart-dropdown").classList.add("active");
+    showToast(name);
+    const b = $('cartBadge');
+    b.style.transform = 'scale(1.6)';
+    setTimeout(() => b.style.transform = '', 300);
+}
+
+function removeFromCart(id) {
+    const li = document.querySelector(`[data-cid="${id}"]`);
+    const done = () => { cart = cart.filter(item => item.id !== id); saveAndRefresh(); };
+    if (li && !reduce) { li.classList.add('out'); setTimeout(done, 260); } else done();
+}
+
+function saveAndRefresh() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+    displayCart();
+}
+
+function cartTotal() { return cart.reduce((s, i) => s + i.price, 0); }
+
+function displayCart() {
+    const list = $("cartItems"), badge = $("cartBadge");
+    list.innerHTML = "";
+    if (!cart.length) {
+        list.innerHTML = '<li class="cart-empty"><i class="fa-solid fa-bag-shopping"></i>Your bag is empty</li>';
+    }
+    cart.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "cart-item" + (item.id === lastAdded ? " new" : "");
+        li.dataset.cid = item.id;
+        li.innerHTML = `
+            <span>${item.name}</span>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-size:0.8rem;color:var(--gold-light);font-weight:600;">${item.price.toLocaleString()} FRW</span>
+                <button class="remove-btn" onclick="removeFromCart(${item.id})"><i class="fa-solid fa-xmark"></i></button>
+            </div>`;
+        list.appendChild(li);
+    });
+    lastAdded = null;
+    const total = cartTotal();
+    countUp($("total"), total, prevTotal, 600);
+    prevTotal = total;
+    badge.innerText = cart.length;
+    badge.style.display = cart.length ? 'flex' : 'none';
+
+    // USSD: amount is put into the code, so the customer only types their PIN
+    $('ussdBtn').href = `tel:*182*1*1*${MOMO}*${total}%23`;
+    $('ussdCode').textContent = total ? `*182*1*1*${MOMO}*${total}#` : `*182*1*1*${MOMO}#`;
+}
+
+// ── PAY VIA USSD (amount auto-filled) ────────────────────────
+async function payUSSD(e) {
+    e.preventDefault();
+    const href = e.currentTarget.href;
+    if (!cart.length) { alert("Your cart is empty!"); return false; }
+    if (requireLogin()) return false;
+    if (!(await recordOrder('momo-ussd'))) return false;
+    if (!isMobile) { copyUSSD(); return false; }   // desktops can't dial: copy the code instead
+    window.location.href = href;                   // phones: opens the dialer with the amount already typed
+    return false;
+}
+function copyUSSD() {
+    const code = $('ussdCode').textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(code) : Promise.reject()).then(
+        () => toast('USSD code copied. Dial it on your phone.', 'fa-copy'),
+        () => toast('Dial: ' + code, 'fa-phone')
+    );
+}
+$('ussdCode').addEventListener('click', copyUSSD);
+
+// ── SEARCH + FILTER ──────────────────────────────────────────
+function popCard(c) {
+    c.classList.add('in');
+    if (reduce) return;
+    c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop');
+    c.addEventListener('animationend', () => c.classList.remove('pop'), { once: true });
+}
+
+function filterProducts() {
+    const q = $('productSearch').value.toLowerCase();
+    let visible = 0, k = 0;
+    document.querySelectorAll('#productGrid .card').forEach(card => {
+        const name = card.dataset.name.toLowerCase(), tag = card.dataset.tag;
+        const matchSearch = name.includes(q);
+        const matchTag = currentTag === 'all' || (currentTag === 'saved' ? wish.has(card.dataset.name) : tag === currentTag);
+        const show = matchSearch && matchTag, was = card.classList.contains('hidden');
+        card.classList.toggle('hidden', !show);
+        if (show) { visible++; if (was) { card.style.animationDelay = (k++ * 30) + 'ms'; popCard(card); } }
+    });
+    updateCount(visible);
+    $('noResults').classList.toggle('show', visible === 0);
+}
+
+function filterByTag(btn, tag) {
+    currentTag = tag;
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    filterProducts();
+}
+
+// ── SORT (cards glide to their new spots) ────────────────────
+function sortProducts() {
+    const val = $('sortSelect').value, grid = $('productGrid');
+    const cards = [...grid.querySelectorAll('.card')];
+    const first = new Map(cards.map(c => [c, c.getBoundingClientRect()]));
+    cards.sort((a, b) => {
+        if (val === 'low')  return +a.dataset.price - +b.dataset.price;
+        if (val === 'high') return +b.dataset.price - +a.dataset.price;
+        if (val === 'name') return a.dataset.name.localeCompare(b.dataset.name);
+        return +a.dataset.index - +b.dataset.index;
+    });
+    cards.forEach(c => grid.appendChild(c));
+    if (reduce) return;
+    cards.forEach(c => {
+        if (c.classList.contains('hidden')) return;
+        const f = first.get(c), l = c.getBoundingClientRect(), dx = f.left - l.left, dy = f.top - l.top;
+        if (dx || dy) c.animate([{ translate: `${dx}px ${dy}px` }, { translate: '0 0' }], { duration: 550, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    });
+}
+
+function updateCount(n) {
+    const count = $('collCount');
+    if (count) count.innerHTML = `Showing <span>${n}</span> pieces`;
+}
+
+// ── QUICK VIEW ───────────────────────────────────────────────
+const visibleCards = () => [...document.querySelectorAll('#productGrid .card:not(.hidden)')];
+function fillQV(card, animate) {
+    const img = $('qvImg'), set = () => {
+        img.src = `bag${card.dataset.index}.jpg`; img.alt = card.dataset.name;
+        img.style.visibility = 'visible'; img.classList.remove('swap');
+    };
+    $('qvName').textContent = card.dataset.name;
+    $('qvPrice').textContent = fmt(+card.dataset.price) + ' FRW';
+    const list = visibleCards();
+    $('qvCount').textContent = `${list.indexOf(card) + 1} / ${list.length}`;
+    if (animate && !reduce) { img.classList.add('swap'); setTimeout(set, 180); } else set();
+}
+function openQV(card) {
+    qvIndex = visibleCards().indexOf(card);
+    fillQV(card, false);
+    $('qv').classList.add('open'); $('qv').setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+function closeQV() { $('qv').classList.remove('open'); $('qv').setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; }
+function stepQV(d) {
+    const list = visibleCards(); if (!list.length) return;
+    qvIndex = (qvIndex + d + list.length) % list.length;
+    fillQV(list[qvIndex], true);
+}
+$('qvImg').addEventListener('error', e => e.target.style.visibility = 'hidden');
+$('qvClose').onclick = closeQV;
+$('qvPrev').onclick = () => stepQV(-1);
+$('qvNext').onclick = () => stepQV(1);
+$('qv').addEventListener('click', e => { if (e.target === $('qv')) closeQV(); });
+$('qvAdd').onclick = () => { const c = visibleCards()[qvIndex]; if (c) { addToCart(c.dataset.name, +c.dataset.price); } };
+document.addEventListener('keydown', e => {
+    if (!$('qv').classList.contains('open')) return;
+    if (e.key === 'Escape') closeQV();
+    if (e.key === 'ArrowLeft') stepQV(-1);
+    if (e.key === 'ArrowRight') stepQV(1);
+});
+
+// ── ORDER VIA GMAIL ───────────────────────────────────────────
+function orderViaGmail() {
+    if (!cart.length) { alert("Your cart is empty!"); return; }
+    const now = new Date().toLocaleString("en-RW",{dateStyle:"medium",timeStyle:"short"});
+    const subject = "New Order from Dala Threads - " + now;
+    let body = "DALA THREADS - NEW ORDER\n========================\n\n";
+    body += "Order Time: " + now + "\n\nORDER ITEMS:\n------------\n";
+    cart.forEach((item,i) => { body += `${i+1}. ${item.name} — ${item.price.toLocaleString()} FRW\n`; });
+    const total = cartTotal();
+    body += `\nTOTAL: ${total.toLocaleString()} FRW\n\nPlease confirm availability and payment instructions.\n\nThank you!`;
+    window.open(`https://mail.google.com/mail/?view=cm&to=keybuhendwa0@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank");
+}
+
+// ── WHATSAPP ──────────────────────────────────────────────────
+// ── BUYING REQUIRES AN ACCOUNT: orders are saved in the customer's account (Settings › My orders) ──
+let _lastOrderSig = '', _lastOrderAt = 0;
+function requireLogin() {
+    if (DalaAPI.isLoggedIn()) return false;
+    alert('Please sign in or create an account to place your order. Your cart will be waiting for you.');
+    window.location.href = 'login.html?next=product.html';
+    return true;
+}
+// returns true when it is fine to continue to WhatsApp / MoMo, false when the customer must stop
+async function recordOrder(method) {
+    const counts = {};
+    cart.forEach(i => { const idx = PRODUCTS.findIndex(p => p[0] === i.name); if (idx >= 0) counts[idx + 1] = (counts[idx + 1] || 0) + 1; });
+    const sig = JSON.stringify(counts);
+    if (sig === _lastOrderSig && Date.now() - _lastOrderAt < 60000) return true;   // same cart saved a moment ago: no duplicate
+    const u = DalaAPI.user() || {};
+    try {
+        await DalaAPI.placeOrder({
+            paymentMethod: method,
+            items: Object.entries(counts).map(([n, q]) => ({ productNumber: +n, quantity: q })),
+            shippingAddress: { fullName: `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'Customer', phone: u.phone || '', address: u.address || 'To be confirmed with the customer', city: u.city || '' }
+        });
+        _lastOrderSig = sig; _lastOrderAt = Date.now();
+        return true;
+    } catch (err) {
+        if (err.status === 401) { alert('Your session has expired. Please sign in again.'); window.location.href = 'login.html?next=product.html'; return false; }
+        if (err.status && err.status < 500) { alert(err.message); return false; }          // e.g. a bag just sold out
+        return confirm('We could not save this order to your account (' + err.message + ').\nContinue anyway?');
+    }
+}
+
+async function checkoutWhatsApp() {
+    if (!cart.length) { alert("Your cart is empty!"); return; }
+    if (requireLogin()) return;
+    const win = window.open('', '_blank');            // opened right away so the browser does not block it
+    if (!(await recordOrder('whatsapp'))) { if (win) win.close(); return; }
+    let msg = "*DALA THREADS - NEW ORDER*%0A%0A*Items:*%0A";
+    cart.forEach(item => { msg += `- ${item.name} (${item.price.toLocaleString()} FRW)%0A`; });
+    const total = cartTotal();
+    msg += `%0A*Total: ${total.toLocaleString()} FRW*%0A%0APlease confirm availability. Thank you! \u{1F64F}`;
+    const url = `https://wa.me/250795013119?text=${msg}`;
+    if (win) win.location.href = url; else window.location.href = url;
+}
+
+// ── HEADER SCROLL + PROGRESS BAR + BACK TO TOP ───────────────
+window.addEventListener("scroll", () => {
+    $("mainHeader").classList.toggle("scrolled", window.scrollY > 60);
+    const h = document.documentElement, max = h.scrollHeight - h.clientHeight;
+    $('scrollBar').style.width = (max > 0 ? window.scrollY / max * 100 : 0) + '%';
+    $('toTop').classList.toggle('show', window.scrollY > 600);
+}, { passive: true });
+$('toTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+// ── BUTTON RIPPLE ─────────────────────────────────────────────
+document.addEventListener('pointerdown', e => {
+    const b = e.target.closest('.btn-overlay-add,.btn-quick,.btn-add-inline,.btn-heart,.checkout-btn,.filter-pill,.icon-btn,.btn-qv-add');
+    if (!b) return;
+    const r = b.getBoundingClientRect(), s = Math.max(r.width, r.height), sp = document.createElement('span');
+    sp.className = 'ripple';
+    sp.style.cssText = `width:${s}px;height:${s}px;left:${e.clientX - r.left - s / 2}px;top:${e.clientY - r.top - s / 2}px`;
+    b.appendChild(sp);
+    setTimeout(() => sp.remove(), 600);
+});
+
+// ── HERO PARTICLES (drift upward, gently avoid the cursor) ───
+(function () {
+    const c = $('heroCanvas'); if (!c || reduce) return;
+    const x = c.getContext('2d'), hero = c.parentElement; let w, h, m = { x: -999, y: -999 }, pts = [];
+    const size = () => { w = c.width = c.offsetWidth; h = c.height = c.offsetHeight; };
+    size(); addEventListener('resize', size);
+    hero.addEventListener('mousemove', e => { const r = c.getBoundingClientRect(); m.x = e.clientX - r.left; m.y = e.clientY - r.top; });
+    hero.addEventListener('mouseleave', () => { m.x = m.y = -999; });
+    for (let i = 0; i < 46; i++) pts.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 2 + .6, v: Math.random() * .4 + .15, a: Math.random() * 6.28 });
+    (function loop() {
+        if (!document.hidden) {
+            x.clearRect(0, 0, w, h);
+            pts.forEach(p => {
+                p.y -= p.v; p.a += .01; p.x += Math.sin(p.a) * .3;
+                const dx = p.x - m.x, dy = p.y - m.y, d = Math.hypot(dx, dy);
+                if (d < 110) { p.x += dx / d * 2.2; p.y += dy / d * 2.2; }
+                if (p.y < -5) { p.y = h + 5; p.x = Math.random() * w; }
+                x.beginPath(); x.arc(p.x, p.y, p.r, 0, 7);
+                x.fillStyle = `rgba(232,201,122,${.15 + p.r / 6})`; x.fill();
+            });
+        }
+        requestAnimationFrame(loop);
+    })();
+})();
+
+// ── THEME ─────────────────────────────────────────────────────
+function toggleTheme() {
+    document.body.classList.toggle("light");
+    const isLight = document.body.classList.contains("light");
+    localStorage.setItem("dtTheme", isLight ? "light" : "dark");
+    $("themeIcon").className = isLight ? "fa-solid fa-moon" : "fa-solid fa-sun";
+}
+
+// ── TRANSLATIONS ──────────────────────────────────────────────
+const T = {
+    en: {
+        eyebrow:"Handmade in Rwanda", title:"Our Full <em>Collection</em>",
+        sub:"Every piece tells a story — crafted bead by bead with patience, tradition, and love.",
+        cart:"Your Shopping Bag", totalLabel:"Total",
+        home:"Home", prod:"Our Products", cont:"Contact Us", serv:"Services", login:"Sign In",
+        tagAll:"All", tagPurse:"Purses", tagBag:"Bags", tagBackpack:"Backpacks", tagClutch:"Clutches", tagSaved:"Saved",
+        stPieces:"Pieces", stHand:"Handmade", stCats:"Categories",
+        nrTitle:"No pieces found", nrText:"Try another search word or pick a different category.",
+        ussd:"Amount is filled in for you. Just enter your PIN."
+    },
+    rw: {
+        eyebrow:"Ikorwa mu Rwanda", title:"Ibikorwa <em>Byacu Byose</em>",
+        sub:"Buri gicuruzwa gifite inkuru — gikorwa imisanga incuro z'inshuro igihe, amateka n'urukundo.",
+        cart:"Agasaho Kawe", totalLabel:"Igiteranyo",
+        home:"Ahabanza", prod:"Ibicuruzwa", cont:"Twandikire", serv:"Serivisi", login:"Injira",
+        tagAll:"Byose", tagPurse:"Amasakoshi", tagBag:"Amasaho", tagBackpack:"Imivuko", tagClutch:"Amasakoshi Mato", tagSaved:"Ibyakunzwe",
+        stPieces:"Ibicuruzwa", stHand:"Bikozwe n'intoki", stCats:"Ibyiciro",
+        nrTitle:"Nta gicuruzwa kibonetse", nrText:"Gerageza irindi jambo cyangwa uhitemo ikindi cyiciro.",
+        ussd:"Amafaranga yamaze kwinjizwamo. Andika umubare w'ibanga gusa."
+    }
+};
+
+function applyTranslations(l) {
+    const t = T[l] || T.en;
+    localStorage.setItem("dtLang", l);
+    $("pageEyebrow").textContent = t.eyebrow;
+    $("galleryTitle").innerHTML = t.title;
+    $("gallerySubtitle").textContent = t.sub;
+    $("cartTitle").innerHTML = `<i class="fa-solid fa-bag-shopping" style="margin-right:8px;font-size:0.9rem;"></i>${t.cart}`;
+    $("totalLabel").textContent = t.totalLabel;
+    $("navHome").textContent = t.home;
+    $("navProduct").textContent = t.prod;
+    $("navContact").textContent = t.cont;
+    $("navServices").textContent = t.serv;
+    $("navLogin").textContent = t.login;
+    $("tagAll").textContent = t.tagAll;
+    $("tagPurse").textContent = t.tagPurse;
+    $("tagBag").textContent = t.tagBag;
+    $("tagBackpack").textContent = t.tagBackpack;
+    $("tagClutch").textContent = t.tagClutch;
+    $("tagSaved").lastElementChild.textContent = t.tagSaved;
+    $("stPieces").textContent = t.stPieces;
+    $("stHand").textContent = t.stHand;
+    $("stCats").textContent = t.stCats;
+    $("nrTitle").textContent = t.nrTitle;
+    $("nrText").textContent = t.nrText;
+    $("ussdHintText").textContent = t.ussd;
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+window.onload = () => {
+    buildGrid();
+    bindGrid();
+    displayCart();
+    if (localStorage.getItem("dtTheme") === "light") {
+        document.body.classList.add("light");
+        $("themeIcon").className = "fa-solid fa-moon";
+    }
+    const savedLang = localStorage.getItem("dtLang") || "en";
+    $("language").value = savedLang;
+    applyTranslations(savedLang);
+    updateCount(PRODUCTS.length);
+    $('statPieces').dataset.count = PRODUCTS.length;
+    document.querySelectorAll('[data-count]').forEach(el => countUp(el, +el.dataset.count, 0, 1400));
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dala Threads | Contact Us</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--gold:#c9a84c;--gold-light:#e8c97a;--deep:#0f0820;--surface:#160d2a;--surface2:#1e1235;--rose:#8b2252;--text:#f5ede0;--text-muted:rgba(245,237,224,0.5);--border:rgba(201,168,76,0.15);--transition:all 0.4s cubic-bezier(0.4,0,0.2,1);--header-h:72px}
+body.light{--deep:#f7f1e8;--surface:#ede4d4;--surface2:#e4d8c4;--text:#1a0f2e;--text-muted:rgba(26,15,46,0.5);--border:rgba(139,34,82,0.15)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--deep);color:var(--text);overflow-x:hidden;transition:background .4s,color .4s;min-height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--deep)}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+:focus-visible{outline:2px solid var(--gold-light);outline-offset:3px}
+#progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:1100;background:linear-gradient(90deg,var(--rose),var(--gold),var(--gold-light));box-shadow:0 0 10px rgba(201,168,76,.6)}
+
+/* ── HEADER ── */
+header{position:fixed;top:0;width:100%;height:var(--header-h);z-index:1000;padding:0 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(15,8,32,0.8);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:var(--transition)}
+body.light header{background:rgba(247,241,232,0.9)}
+header.scrolled{height:60px;background:rgba(8,3,20,0.97);box-shadow:0 4px 30px rgba(0,0,0,0.4)}
+body.light header.scrolled{background:rgba(247,241,232,0.98)}
+.logo-container{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+.logo-circle{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--rose));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:600;color:#fff;box-shadow:0 0 18px rgba(201,168,76,0.35);flex-shrink:0;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.logo-container:hover .logo-circle{transform:rotate(360deg)}
+.logo-container h1{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:400;letter-spacing:2px;background:linear-gradient(90deg,var(--gold-light),var(--text));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+nav{display:flex;gap:26px;align-items:center}
+nav a{color:var(--text-muted);text-decoration:none;font-size:.78rem;letter-spacing:1.8px;text-transform:uppercase;font-weight:500;transition:var(--transition);position:relative}
+nav a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--gold);transition:var(--transition)}
+nav a:hover{color:var(--gold-light)}nav a:hover::after{width:100%}
+nav a.active{color:var(--gold-light)}nav a.active::after{width:100%}
+.top-icons{display:flex;gap:10px;align-items:center}
+.icon-btn{width:36px;height:36px;border-radius:50%;background:rgba(201,168,76,0.08);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-size:.85rem;cursor:pointer;transition:var(--transition);outline:none}
+.icon-btn:hover{background:rgba(201,168,76,0.2);border-color:var(--gold);transform:scale(1.08)}
+.top-icons select{background:rgba(201,168,76,0.08);border:1px solid var(--border);color:var(--gold-light);padding:6px 10px;border-radius:8px;cursor:pointer;font-family:'Jost',sans-serif;font-size:.76rem;transition:var(--transition);outline:none}
+.top-icons select:hover{background:rgba(201,168,76,0.18);border-color:var(--gold)}
+
+/* ── PAGE HERO ── */
+.page-hero{padding-top:var(--header-h);background:radial-gradient(ellipse 70% 60% at 15% 50%,rgba(139,34,82,0.22) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 85% 50%,rgba(201,168,76,0.1) 0%,transparent 60%),linear-gradient(160deg,#08031a 0%,#140830 60%,#0f0820 100%);position:relative;overflow:hidden}
+body.light .page-hero{background:radial-gradient(ellipse 70% 60% at 15% 50%,rgba(139,34,82,0.08) 0%,transparent 60%),linear-gradient(160deg,#f0e6d3 0%,#ede4d4 100%)}
+#beads{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.page-hero-inner{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:70px 5% 60px;text-align:center}
+.page-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.66rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;animation:fadeUp .8s ease both}
+.page-eyebrow::before,.page-eyebrow::after{content:'';width:24px;height:1px;background:var(--gold);opacity:.5}
+.page-hero h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:300;line-height:1.15;margin-bottom:16px;animation:fadeUp .8s ease .1s both}
+.page-hero h2 em,.info-panel h3 em{font-style:italic;color:var(--gold-light);background:linear-gradient(100deg,var(--gold-light) 35%,#fff 50%,var(--gold-light) 65%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sheen 6s linear infinite}
+body.light .page-hero h2 em,body.light .info-panel h3 em{background:linear-gradient(100deg,#8b2252 35%,#c9a84c 50%,#8b2252 65%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text}
+@keyframes sheen{to{background-position:-250% 0}}
+.page-hero p{font-size:.95rem;color:var(--text-muted);max-width:480px;margin:0 auto;line-height:1.85;animation:fadeUp .8s ease .2s both}
+.hero-divider{height:1px;width:100%;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.25;position:relative;z-index:1}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── CONTACT MAIN ── */
+.contact-main{max-width:1100px;margin:0 auto;padding:80px 5% 100px;display:grid;grid-template-columns:1fr 1.4fr;gap:60px;align-items:start}
+.info-tag{font-size:.66rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block;animation:fadeUp .8s ease .1s both}
+.info-panel h3{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:300;line-height:1.2;margin-bottom:16px;animation:fadeUp .8s ease .15s both}
+.info-panel>p{font-size:.9rem;color:var(--text-muted);line-height:1.85;margin-bottom:42px;animation:fadeUp .8s ease .2s both}
+.contact-items{display:flex;flex-direction:column}
+.contact-item{display:flex;align-items:flex-start;gap:18px;padding:20px 0;border-bottom:1px solid var(--border);transition:var(--transition)}
+.contact-item:first-child{border-top:1px solid var(--border)}
+.contact-item:hover{padding-left:6px}
+.contact-item-icon{width:42px;height:42px;border-radius:10px;background:rgba(201,168,76,0.08);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.95rem;flex-shrink:0;transition:var(--transition)}
+.contact-item:hover .contact-item-icon{background:rgba(201,168,76,0.18);border-color:var(--gold);transform:rotate(-8deg) scale(1.08)}
+.contact-item-text{flex:1;min-width:0}
+.contact-item-label{font-size:.66rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px}
+.contact-item-value{font-size:.92rem;font-weight:500;color:var(--text);letter-spacing:.3px;word-break:break-word}
+.contact-item-value a{color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:var(--transition)}
+.contact-item-value a:hover{color:var(--gold-light);border-color:var(--gold)}
+.copy-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;transition:var(--transition);flex-shrink:0;align-self:center}
+.copy-btn:hover{color:var(--gold-light);border-color:var(--gold);background:rgba(201,168,76,.12);transform:scale(1.08)}
+.copy-btn.done{color:#fff;background:var(--gold);border-color:var(--gold)}
+.open-badge{display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:3px 11px;border-radius:20px;font-size:.7rem;font-weight:600;letter-spacing:.5px;border:1px solid var(--border);color:var(--text-muted)}
+.open-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:#888}
+.open-badge.open{color:#2ecc71;border-color:rgba(46,204,113,.4);background:rgba(46,204,113,.08)}
+.open-badge.open::before{background:#2ecc71;animation:pulse 1.8s infinite}
+.open-badge.closed{color:#e67e73;border-color:rgba(230,126,115,.4);background:rgba(230,126,115,.08)}
+.open-badge.closed::before{background:#e67e73}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(46,204,113,.6)}100%{box-shadow:0 0 0 9px rgba(46,204,113,0)}}
+.wa-quick{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:30px;padding:14px;border-radius:12px;text-decoration:none;color:#fff;font-weight:600;font-size:.82rem;letter-spacing:1.5px;text-transform:uppercase;background:linear-gradient(135deg,#25D366,#1aad52);transition:var(--transition)}
+.wa-quick:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(37,211,102,.3)}
+.wa-quick i{font-size:1.2rem}
+.social-strip{display:flex;gap:10px;margin-top:30px}
+.social-strip a{width:38px;height:38px;border-radius:50%;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.18);display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-size:.88rem;text-decoration:none;transition:var(--transition)}
+.social-strip a:hover{background:var(--gold);color:var(--deep);transform:translateY(-3px) rotate(-8deg);box-shadow:0 6px 16px rgba(201,168,76,0.3)}
+
+/* scroll reveal */
+.rv{opacity:0;translate:-24px 0;transition:opacity .7s ease,translate .7s cubic-bezier(.2,.8,.2,1),padding .4s}
+.rv.in{opacity:1;translate:0 0}
+
+/* ── FORM PANEL ── */
+.form-panel{background:linear-gradient(160deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:22px;padding:44px 40px;box-shadow:0 30px 70px rgba(0,0,0,0.35);animation:fadeUp .8s ease .2s both;position:relative;overflow:hidden}
+.form-panel::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.08),transparent 70%);pointer-events:none}
+.form-panel::after{content:'';position:absolute;bottom:-40px;left:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(139,34,82,0.1),transparent 70%);pointer-events:none}
+.spot{position:absolute;inset:0;pointer-events:none;background:radial-gradient(380px circle at var(--mx,50%) var(--my,0%),rgba(201,168,76,.1),transparent 60%);opacity:0;transition:opacity .4s}
+.form-panel:hover .spot{opacity:1}
+.fp{position:absolute;top:0;left:0;right:0;height:3px;background:rgba(201,168,76,.1);z-index:2}
+.fp i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--rose),var(--gold),var(--gold-light));transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.form-panel h4{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;margin-bottom:6px;letter-spacing:.5px;position:relative;z-index:1}
+.form-panel>p{font-size:.83rem;color:var(--text-muted);margin-bottom:30px;line-height:1.7;position:relative;z-index:1}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;position:relative;z-index:1}
+.form-group{display:flex;flex-direction:column;gap:6px;position:relative;z-index:1}
+.form-group.full{grid-column:span 2}
+.form-group label{font-size:.66rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);transition:color .3s}
+.form-group:focus-within label{color:var(--gold-light)}
+.form-group.ok label::after{content:' ✓';color:var(--gold);font-weight:700}
+.form-group input,.form-group textarea,.form-group select{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--text);font-family:'Jost',sans-serif;font-size:.88rem;outline:none;transition:var(--transition);resize:none}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--text-muted)}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--gold);background:rgba(201,168,76,0.06);box-shadow:0 0 0 3px rgba(201,168,76,0.08);transform:translateY(-1px)}
+.form-group select option{background:var(--surface2);color:var(--text)}
+.form-group textarea{height:130px}
+.counter{align-self:flex-end;font-size:.68rem;letter-spacing:1px;color:var(--text-muted);transition:color .3s}
+.counter.warn{color:var(--rose)}
+.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.btn-send{position:relative;overflow:hidden;width:100%;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:'Jost',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--deep);transition:transform .25s ease-out,box-shadow .4s,filter .4s;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:1}
+.btn-send:hover{box-shadow:0 12px 30px rgba(201,168,76,0.4);filter:brightness(1.05)}
+.btn-send:hover i.fa-paper-plane{animation:fly .8s ease infinite}
+@keyframes fly{50%{transform:translate(5px,-5px) rotate(8deg)}}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.4);transform:scale(0);animation:ripple .6s ease-out forwards;pointer-events:none}
+@keyframes ripple{to{transform:scale(2.6);opacity:0}}
+
+/* success state */
+.form-success{display:none;text-align:center;padding:40px 20px;position:relative;z-index:1}
+.form-success.show{display:block;animation:fadeUp .6s ease}
+.success-icon{width:64px;height:64px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:var(--gold)}
+.form-success.show .success-icon{animation:pop .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(0)}}
+.form-success path{stroke-dasharray:1;stroke-dashoffset:1}
+.form-success.show path{animation:draw .6s .25s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.form-success h4{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:10px}
+.form-success p{font-size:.88rem;color:var(--text-muted);line-height:1.7}
+.deliver{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.dbtn{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border:none;border-radius:10px;color:#fff;font:600 .78rem 'Jost',sans-serif;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:var(--transition)}
+.dbtn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.dbtn.wa{background:#1faa57}.dbtn.em{background:#c0392b}
+.again{margin-top:18px;background:none;border:none;color:var(--gold-light);font:500 .82rem 'Jost',sans-serif;cursor:pointer;border-bottom:1px solid var(--border);padding-bottom:2px;transition:var(--transition)}
+.again:hover{border-color:var(--gold)}
+.confetti{position:fixed;z-index:5000;width:8px;height:12px;border-radius:2px;pointer-events:none}
+
+/* ── MAP STRIP ── */
+.map-strip{position:relative;background:rgba(201,168,76,0.02);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0;overflow:hidden}
+.map-strip iframe{width:100%;height:260px;display:block;filter:brightness(.65) saturate(.4) hue-rotate(200deg);border:none;transition:var(--transition)}
+.map-strip iframe:hover{filter:brightness(.8) saturate(.6) hue-rotate(200deg)}
+.dir-btn{position:absolute;right:5%;bottom:20px;display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:30px;text-decoration:none;font-size:.78rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--deep);background:linear-gradient(135deg,var(--gold),var(--gold-light));box-shadow:0 8px 24px rgba(0,0,0,.4);transition:var(--transition)}
+.dir-btn:hover{transform:translateY(-3px)}
+
+/* back to top + toast */
+#toTop{position:fixed;right:22px;bottom:26px;z-index:900;width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:linear-gradient(135deg,var(--surface),var(--surface2));color:var(--gold-light);cursor:pointer;opacity:0;transform:translateY(20px) scale(.8);pointer-events:none;transition:var(--transition);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+#toTop.show{opacity:1;transform:none;pointer-events:auto}
+#toTop:hover{background:var(--gold);color:var(--deep);transform:translateY(-4px)}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,var(--surface),var(--surface2));border:1px solid var(--border);color:var(--text);padding:12px 24px;border-radius:50px;font-size:.82rem;box-shadow:0 10px 30px rgba(0,0,0,0.4);z-index:6000;transition:transform .4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;gap:10px;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast i{color:var(--gold)}
+
+/* ── FOOTER ── */
+footer{background:#07030f;border-top:1px solid rgba(201,168,76,0.1);padding:64px 5% 28px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:48px;margin-bottom:44px;max-width:1100px;margin-left:auto;margin-right:auto}
+.footer-brand h2{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;color:var(--gold-light);letter-spacing:2px;margin-bottom:13px}
+.footer-brand p{font-size:.83rem;color:var(--text-muted);line-height:1.85;margin-bottom:24px}
+.socials{display:flex;gap:10px}
+.socials a{width:36px;height:36px;border-radius:50%;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.18);display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-size:.85rem;text-decoration:none;transition:var(--transition)}
+.socials a:hover{background:var(--gold);color:var(--deep);transform:translateY(-3px) rotate(-8deg)}
+.footer-col h4{font-size:.64rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.footer-col a,.footer-col p{display:block;color:var(--text-muted);text-decoration:none;font-size:.82rem;margin-bottom:9px;transition:var(--transition);line-height:1.6}
+.footer-col a:hover{color:var(--gold-light);padding-left:4px}
+.footer-bottom{padding-top:20px;border-top:1px solid rgba(201,168,76,0.08);display:flex;justify-content:space-between;font-size:.74rem;color:var(--text-muted);max-width:1100px;margin:0 auto}
+
+/* ── RESPONSIVE ── */
+@media (max-width:900px){.contact-main{grid-template-columns:1fr;gap:40px}.footer-grid{grid-template-columns:1fr 1fr;gap:28px}}
+@media (max-width:768px){header{flex-direction:column;height:auto;padding:14px 5%;gap:12px}nav{flex-wrap:wrap;justify-content:center;gap:14px}.page-hero{padding-top:150px}.page-hero-inner{padding:50px 5% 40px}.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:span 1}.form-panel{padding:30px 24px}}
+@media (max-width:520px){.footer-grid{grid-template-columns:1fr}.deliver{grid-template-columns:1fr}.toast{white-space:normal;width:88%;text-align:center}.dir-btn{right:50%;transform:translateX(50%)}.dir-btn:hover{transform:translateX(50%) translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}.rv{opacity:1;translate:0 0}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<!-- ── HEADER ── -->
+<header id="mainHeader">
+    <a href="index.html" class="logo-container">
+        <div class="logo-circle">DT</div>
+        <h1>Dala Threads</h1>
+    </a>
+    <nav>
+        <a href="index.html" id="navHome">Home</a>
+        <a href="product.html" id="navProduct">Our Products</a>
+        <a href="contact.html" id="navContact" class="active">Contact Us</a>
+        <a href="ourservices.html" id="navServices">Services</a>
+        <a href="login.html" id="navLogin">Sign In</a>
+    </nav>
+    <div class="top-icons">
+        <select id="language" onchange="applyTranslations(this.value)">
+            <option value="en">EN</option>
+            <option value="rw">RW</option>
+        </select>
+        <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+            <i class="fa-solid fa-sun" id="themeIcon"></i>
+        </button>
+    </div>
+</header>
+
+<!-- ── PAGE HERO ── -->
+<div class="page-hero">
+    <canvas id="beads"></canvas>
+    <div class="page-hero-inner">
+        <div class="page-eyebrow" id="pageEyebrow">We'd love to hear from you</div>
+        <h2 id="pageTitle">Get in <em>Touch</em></h2>
+        <p id="pageSubtitle">Whether you have a question, want a custom design, or simply want to say hello — we're here for you.</p>
+    </div>
+    <div class="hero-divider"></div>
+</div>
+
+<!-- ── CONTACT MAIN ── -->
+<div class="contact-main">
+
+    <!-- LEFT: INFO PANEL -->
+    <div class="info-panel">
+        <span class="info-tag" id="infoTag">Reach us directly</span>
+        <h3 id="infoTitle">Let's Start a <em>Conversation</em></h3>
+        <p id="infoText">Every order, question, and custom request matters to us. Reach out through any of the channels below and we'll get back to you as soon as possible.</p>
+
+        <div class="contact-items">
+            <div class="contact-item rv">
+                <div class="contact-item-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div class="contact-item-text">
+                    <div class="contact-item-label" id="labelLocation">Location</div>
+                    <div class="contact-item-value"><a href="https://www.google.com/maps/search/?api=1&query=Ruyenzi,Kamonyi,Rwanda" target="_blank" rel="noopener">Ruyenzi, Kamonyi, Rwanda</a></div>
+                </div>
+                <button class="copy-btn" data-copy="Ruyenzi, Kamonyi, Rwanda" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+            </div>
+            <div class="contact-item rv">
+                <div class="contact-item-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                <div class="contact-item-text">
+                    <div class="contact-item-label" id="labelPhone">WhatsApp</div>
+                    <div class="contact-item-value"><a href="https://wa.me/250795013119" target="_blank" rel="noopener">+250 795 013 119</a></div>
+                </div>
+                <button class="copy-btn" data-copy="+250 795 013 119" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+            </div>
+            <div class="contact-item rv">
+                <div class="contact-item-icon"><i class="fa-solid fa-envelope"></i></div>
+                <div class="contact-item-text">
+                    <div class="contact-item-label" id="labelEmail">Email</div>
+                    <div class="contact-item-value"><a href="mailto:keybuhendwa0@gmail.com">keybuhendwa0@gmail.com</a></div>
+                </div>
+                <button class="copy-btn" data-copy="keybuhendwa0@gmail.com" aria-label="Copy"><i class="fa-regular fa-copy"></i></button>
+            </div>
+            <div class="contact-item rv">
+                <div class="contact-item-icon"><i class="fa-regular fa-clock"></i></div>
+                <div class="contact-item-text">
+                    <div class="contact-item-label" id="labelHours">Hours</div>
+                    <div class="contact-item-value" id="hoursValue">Mon – Sat, 8am – 6pm</div>
+                    <span class="open-badge" id="openBadge"></span>
+                </div>
+            </div>
+        </div>
+
+        <a class="wa-quick" href="https://wa.me/250795013119" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i><span id="quickWa">Chat on WhatsApp</span></a>
+
+        <div class="social-strip">
+            <a href="https://www.instagram.com/dala_threads" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://wa.me/250795013119" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="https://www.facebook.com/search/top?q=buhendwa%20daniella" target="_blank" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://www.tiktok.com/@dala_threads" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+    </div>
+
+    <!-- RIGHT: FORM PANEL -->
+    <div class="form-panel" id="formPanel">
+        <div class="fp"><i id="fpBar"></i></div>
+        <div class="spot"></div>
+        <h4 id="formTitle">Send a Message</h4>
+        <p id="formSubtitle">Fill in the form below and we'll respond within 24 hours.</p>
+
+        <form id="contactForm" onsubmit="handleSubmit(event)" novalidate>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label id="labelName" for="inputName">Your Name</label>
+                    <input type="text" id="inputName" placeholder="e.g. Daniella" required>
+                </div>
+                <div class="form-group">
+                    <label id="labelEmailField" for="inputEmail">Email Address</label>
+                    <input type="email" id="inputEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label id="labelPhoneField" for="inputPhone">Phone / WhatsApp</label>
+                    <input type="tel" id="inputPhone" placeholder="+250 7xx xxx xxx">
+                </div>
+                <div class="form-group">
+                    <label id="labelSubject" for="inputSubject">Subject</label>
+                    <select id="inputSubject">
+                        <option value="order" id="optOrder">Custom Order</option>
+                        <option value="question" id="optQuestion">General Question</option>
+                        <option value="wholesale" id="optWholesale">Wholesale</option>
+                        <option value="other" id="optOther">Other</option>
+                    </select>
+                </div>
+                <div class="form-group full">
+                    <label id="labelMessage" for="inputMessage">Your Message</label>
+                    <textarea id="inputMessage" maxlength="500" placeholder="Tell us about your enquiry, custom design idea, or any question…" required></textarea>
+                    <span class="counter" id="counter">0 / 500</span>
+                </div>
+            </div>
+            <button type="submit" class="btn-send" id="submitBtn">
+                <i class="fa-solid fa-paper-plane" id="btnIcon"></i>
+                <span id="btnText">Send Message</span>
+            </button>
+        </form>
+
+        <!-- Success state -->
+        <div class="form-success" id="formSuccess">
+            <div class="success-icon"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/></svg></div>
+            <h4 id="successTitle">Message Sent!</h4>
+            <p id="successText">Thank you for reaching out. We'll get back to you within 24 hours. 🙏</p>
+            <p id="deliverNote" style="margin-top:14px">Want it to reach us right now? Send it straight to us:</p>
+            <div class="deliver">
+                <button class="dbtn wa" onclick="deliver('wa')"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+                <button class="dbtn em" onclick="deliver('em')"><i class="fa-solid fa-envelope"></i> Email</button>
+            </div>
+            <button class="again" id="againBtn" onclick="resetForm()">Send another message</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── MAP STRIP ── -->
+<div class="map-strip">
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15949.613386348604!2d29.938885699999997!3d-1.9936856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca4377b5a1b31%3A0x8979857321590483!2sRuyenzi!5e0!3m2!1sen!2srw!4v1700000000000!5m2!1sen!2srw"
+        allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Dala Threads location">
+    </iframe>
+    <a class="dir-btn" href="https://www.google.com/maps/search/?api=1&query=Ruyenzi,Kamonyi,Rwanda" target="_blank" rel="noopener"><i class="fa-solid fa-location-arrow"></i><span id="dirText">Get directions</span></a>
+</div>
+
+<button id="toTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+<div class="toast" id="toast"><i class="fa-solid fa-check-circle"></i><span id="toastMsg"></span></div>
+
+<!-- ── FOOTER ── -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h2>Dala Threads</h2>
+            <p>Handmade in Rwanda with love. We bring elegance to your wardrobe through traditional beadwork passed down through generations.</p>
+            <div class="socials">
+                <a href="https://www.instagram.com/dala_threads" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://wa.me/250795013119" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/search/top?q=buhendwa%20daniella" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.tiktok.com/@dala_threads" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <a href="index.html">Home</a>
+            <a href="product.html">Our Products</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="ourservices.html">Services</a>
+            <a href="login.html">Sign In</a>
+        </div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <a href="#">Shipping Policy</a>
+            <a href="#">Return Policy</a>
+            <a href="#">FAQs</a>
+            <a href="#">Size Guide</a>
+        </div>
+        <div class="footer-col">
+            <h4>Contact</h4>
+            <p><i class="fa-solid fa-location-dot" style="color:var(--gold);margin-right:6px;"></i>Ruyenzi, Kamonyi, Rwanda</p>
+            <p><i class="fa-brands fa-whatsapp" style="color:var(--gold);margin-right:6px;"></i>+250 795 013 119</p>
+            <p><i class="fa-solid fa-envelope" style="color:var(--gold);margin-right:6px;"></i>keybuhendwa0@gmail.com</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 Dala Threads. All rights reserved.</span>
+        <span>Handmade with ♥ in Rwanda</span>
+    </div>
+</footer>
+
+<script src="js/dala-api.js"></script>
+<script src="js/dala-account.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const curLang = () => $('language').value;
+const tr = () => T[curLang()] || T.en;
+
+// ── TOAST ────────────────────────────────────────────────────
+let toastTimer;
+function toast(msg) {
+    $('toastMsg').textContent = msg;
+    $('toast').classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => $('toast').classList.remove('show'), 2200);
+}
+
+// ── COPY BUTTONS ─────────────────────────────────────────────
+document.querySelectorAll('.copy-btn').forEach(b => b.addEventListener('click', () => {
+    const done = () => {
+        toast(tr().copied);
+        b.classList.add('done'); b.firstElementChild.className = 'fa-solid fa-check';
+        setTimeout(() => { b.classList.remove('done'); b.firstElementChild.className = 'fa-regular fa-copy'; }, 1500);
+    };
+    (navigator.clipboard ? navigator.clipboard.writeText(b.dataset.copy) : Promise.reject()).then(done, () => toast(b.dataset.copy));
+}));
+
+// ── OPEN / CLOSED (Kigali time, Mon–Sat 8am–6pm) ─────────────
+function updateOpen() {
+    const k = new Date(new Date().toLocaleString('en-US', { timeZone: 'Africa/Kigali' }));
+    const open = k.getDay() >= 1 && k.getDay() <= 6 && k.getHours() >= 8 && k.getHours() < 18;
+    const b = $('openBadge');
+    b.className = 'open-badge ' + (open ? 'open' : 'closed');
+    b.textContent = open ? tr().openNow : tr().closedNow;
+}
+setInterval(updateOpen, 60000);
+
+// ── FORM: live validation, progress bar, counter ─────────────
+const fields = ['inputName', 'inputEmail', 'inputPhone', 'inputMessage'];
+function updateForm() {
+    let ok = 0;
+    fields.forEach(id => {
+        const el = $(id), good = el.value.trim() !== '' && el.checkValidity();
+        el.closest('.form-group').classList.toggle('ok', good);
+        if (good) ok++;
+    });
+    $('fpBar').style.width = (ok / fields.length * 100) + '%';
+    const n = $('inputMessage').value.length;
+    $('counter').textContent = n + ' / 500';
+    $('counter').classList.toggle('warn', n > 450);
+}
+fields.forEach(id => $(id).addEventListener('input', updateForm));
+
+function messageText() {
+    const s = $('inputSubject');
+    return `DALA THREADS — NEW MESSAGE\n\nName: ${$('inputName').value}\nEmail: ${$('inputEmail').value}\nPhone: ${$('inputPhone').value || '-'}\nSubject: ${s.options[s.selectedIndex].text}\n\n${$('inputMessage').value}`;
+}
+
+function handleSubmit(e) {
+    e.preventDefault();
+    const bad = ['inputName', 'inputEmail', 'inputMessage'].map($).filter(el => !el.value.trim() || !el.checkValidity());
+    if (bad.length) {
+        bad.forEach(el => { const g = el.closest('.form-group'); g.classList.remove('shake'); void g.offsetWidth; g.classList.add('shake'); });
+        bad[0].focus();
+        return;
+    }
+    const btn = $('submitBtn');
+    btn.disabled = true;
+    $('btnText').textContent = tr().sending;
+    $('btnIcon').className = 'fa-solid fa-circle-notch fa-spin';
+    btn.style.opacity = '0.7';
+
+    DalaAPI.sendMessage({
+        name: $('inputName').value.trim(),
+        email: $('inputEmail').value.trim(),
+        phone: $('inputPhone').value.trim(),
+        subject: $('inputSubject').value,
+        message: $('inputMessage').value.trim()
+    }).then(() => {
+        $('contactForm').style.display = 'none';
+        $('formSuccess').classList.add('show');
+        confetti($('formSuccess').querySelector('.success-icon'));
+    }).catch(err => {
+        btn.disabled = false; btn.style.opacity = '';
+        $('btnText').textContent = tr().btnText;
+        $('btnIcon').className = 'fa-solid fa-paper-plane';
+        alert(err.message);
+    });
+}
+
+function resetForm() {
+    $('contactForm').reset();
+    $('contactForm').style.display = '';
+    $('formSuccess').classList.remove('show');
+    const btn = $('submitBtn');
+    btn.disabled = false; btn.style.opacity = '';
+    $('btnText').textContent = tr().btnText;
+    $('btnIcon').className = 'fa-solid fa-paper-plane';
+    updateForm();
+}
+
+// actually deliver the message: opens WhatsApp or Gmail with it filled in
+function deliver(kind) {
+    const txt = messageText();
+    if (kind === 'wa') window.open('https://wa.me/250795013119?text=' + encodeURIComponent(txt), '_blank');
+    else window.open('https://mail.google.com/mail/?view=cm&to=keybuhendwa0@gmail.com&su=' + encodeURIComponent('Dala Threads — ' + $('inputSubject').selectedOptions[0].text) + '&body=' + encodeURIComponent(txt), '_blank');
+}
+
+function confetti(from) {
+    if (reduce) return;
+    const r = from.getBoundingClientRect(), colors = ['#c9a84c', '#e8c97a', '#8b2252', '#f5ede0'];
+    for (let i = 0; i < 36; i++) {
+        const d = document.createElement('div'); d.className = 'confetti';
+        d.style.background = colors[i % 4];
+        d.style.left = (r.left + r.width / 2) + 'px'; d.style.top = (r.top + r.height / 2) + 'px';
+        document.body.appendChild(d);
+        const a = Math.random() * Math.PI * 2, v = 90 + Math.random() * 160;
+        d.animate([
+            { transform: 'translate(0,0) rotate(0)', opacity: 1 },
+            { transform: `translate(${Math.cos(a) * v}px,${Math.sin(a) * v - 60}px) rotate(${Math.random() * 540}deg)`, opacity: 1, offset: .55 },
+            { transform: `translate(${Math.cos(a) * v * 1.2}px,${Math.sin(a) * v + 140}px) rotate(${Math.random() * 900}deg)`, opacity: 0 }
+        ], { duration: 1300 + Math.random() * 500, easing: 'cubic-bezier(.2,.7,.4,1)' }).onfinish = () => d.remove();
+    }
+}
+
+// ── FORM PANEL: light follows the cursor; send button leans toward it ──
+if (!reduce && matchMedia('(hover:hover)').matches) {
+    const p = $('formPanel');
+    p.addEventListener('mousemove', e => {
+        const r = p.getBoundingClientRect();
+        p.style.setProperty('--mx', (e.clientX - r.left) + 'px'); p.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+    const b = $('submitBtn');
+    b.addEventListener('mousemove', e => {
+        const r = b.getBoundingClientRect();
+        b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .06}px,${(e.clientY - r.top - r.height / 2) * .25 - 2}px)`;
+    });
+    b.addEventListener('mouseleave', () => b.style.transform = '');
+}
+
+// ── RIPPLE ───────────────────────────────────────────────────
+document.addEventListener('pointerdown', e => {
+    const b = e.target.closest('.btn-send,.dbtn,.wa-quick');
+    if (!b) return;
+    const r = b.getBoundingClientRect(), s = Math.max(r.width, r.height), sp = document.createElement('span');
+    sp.className = 'ripple';
+    sp.style.cssText = `width:${s}px;height:${s}px;left:${e.clientX - r.left - s / 2}px;top:${e.clientY - r.top - s / 2}px`;
+    b.appendChild(sp); setTimeout(() => sp.remove(), 600);
+});
+
+// ── HERO BEADS (drift upward, avoid the cursor) ──────────────
+(function () {
+    const c = $('beads'); if (!c || reduce) return;
+    const hero = c.parentElement, x = c.getContext('2d'); let w, h, m = { x: -999, y: -999 }, pts = [];
+    const size = () => { w = c.width = c.offsetWidth; h = c.height = c.offsetHeight; };
+    size(); addEventListener('resize', size);
+    hero.addEventListener('mousemove', e => { const r = c.getBoundingClientRect(); m.x = e.clientX - r.left; m.y = e.clientY - r.top; });
+    hero.addEventListener('mouseleave', () => { m.x = m.y = -999; });
+    for (let i = 0; i < 40; i++) pts.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 2.2 + .6, v: Math.random() * .4 + .12, a: Math.random() * 6.28 });
+    (function loop() {
+        if (!document.hidden) {
+            x.clearRect(0, 0, w, h);
+            const light = document.body.classList.contains('light');
+            pts.forEach(p => {
+                p.y -= p.v; p.a += .01; p.x += Math.sin(p.a) * .3;
+                const dx = p.x - m.x, dy = p.y - m.y, d = Math.hypot(dx, dy);
+                if (d < 110) { p.x += dx / d * 2.2; p.y += dy / d * 2.2; }
+                if (p.y < -5) { p.y = h + 5; p.x = Math.random() * w; }
+                x.beginPath(); x.arc(p.x, p.y, p.r, 0, 7);
+                x.fillStyle = light ? `rgba(139,34,82,${.12 + p.r / 8})` : `rgba(232,201,122,${.15 + p.r / 6})`; x.fill();
+            });
+        }
+        requestAnimationFrame(loop);
+    })();
+})();
+
+// ── SCROLL REVEAL (staggered) ────────────────────────────────
+const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        const el = en.target; io.unobserve(el);
+        const i = [...el.parentElement.children].indexOf(el);
+        setTimeout(() => el.classList.add('in'), reduce ? 0 : i * 130);
+    });
+}, { threshold: .1 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+// ── HEADER SCROLL + PROGRESS + BACK TO TOP ───────────────────
+window.addEventListener('scroll', () => {
+    $('mainHeader').classList.toggle('scrolled', window.scrollY > 60);
+    const h = document.documentElement, max = h.scrollHeight - h.clientHeight;
+    $('progress').style.width = (max > 0 ? window.scrollY / max * 100 : 0) + '%';
+    $('toTop').classList.toggle('show', window.scrollY > 600);
+}, { passive: true });
+$('toTop').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+// ── THEME ────────────────────────────────────────────────────
+function toggleTheme() {
+    document.body.classList.toggle('light');
+    const isLight = document.body.classList.contains('light');
+    localStorage.setItem('dtTheme', isLight ? 'light' : 'dark');
+    $('themeIcon').className = isLight ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+}
+
+// ── TRANSLATIONS ─────────────────────────────────────────────
+const T = {
+    en: {
+        eyebrow:"We'd love to hear from you",
+        title:"Get in <em>Touch</em>",
+        subtitle:"Whether you have a question, want a custom design, or simply want to say hello — we're here for you.",
+        infoTag:"Reach us directly",
+        infoTitle:"Let's Start a <em>Conversation</em>",
+        infoText:"Every order, question, and custom request matters to us. Reach out through any channel below and we'll get back to you soon.",
+        labelLocation:"Location", labelPhone:"WhatsApp", labelEmail:"Email", labelHours:"Hours",
+        hoursValue:"Mon – Sat, 8am – 6pm",
+        formTitle:"Send a Message",
+        formSubtitle:"Fill in the form below and we'll respond within 24 hours.",
+        labelName:"Your Name", labelEmailField:"Email Address",
+        labelPhoneField:"Phone / WhatsApp", labelSubject:"Subject",
+        labelMessage:"Your Message", btnText:"Send Message",
+        optOrder:"Custom Order", optQuestion:"General Question",
+        optWholesale:"Wholesale", optOther:"Other",
+        successTitle:"Message Sent!",
+        successText:"Thank you for reaching out. We'll get back to you within 24 hours. 🙏",
+        home:"Home", prod:"Our Products", cont:"Contact Us", serv:"Services", login:"Sign In",
+        openNow:"Open now", closedNow:"Closed now", copied:"Copied", sending:"Sending…",
+        quickWa:"Chat on WhatsApp", dirText:"Get directions",
+        deliverNote:"Want it to reach us right now? Send it straight to us:", again:"Send another message"
+    },
+    rw: {
+        eyebrow:"Twishimiye kumva inkuru zawe",
+        title:"Twandikire <em>Ubu</em>",
+        subtitle:"Ufite ikibazo, ushaka igicuruzwa cyihariye, cyangwa ushaka gutuganiriza — turimo.",
+        infoTag:"Twegereze directly",
+        infoTitle:"Reka Dutangire <em>Ikiganiro</em>",
+        infoText:"Gutuniza Order Yihariye, ikibazo, n'icyifuzo cyihariye bigira akamaro. Twandikire ukoresheje umwanya uwo ari wo wose.",
+        labelLocation:"Aho tubarizwa", labelPhone:"WhatsApp", labelEmail:"Imeyili", labelHours:"Amasaha",
+        hoursValue:"Ku wa mbere – Kuwa gatandatu, 8am – 6pm",
+        formTitle:"Twoherereze Ubutumwa",
+        formSubtitle:"Uzuza ifishi hano kandi tuzagusubiza mu masaha 24.",
+        labelName:"Amazina Yawe", labelEmailField:"Imeyili Yawe",
+        labelPhoneField:"Telefone / WhatsApp", labelSubject:"Ingingo",
+        labelMessage:"Ubutumwa Bwawe", btnText:"Ohereza Ubutumwa",
+        optOrder:"order Yihariye", optQuestion:"Ikibazo Rusange",
+        optWholesale:"Ubucuruzi Bunini", optOther:"Ikindi",
+        successTitle:"Ubutumwa Bwoherejwe!",
+        successText:"Urakoze kutwandikira. Tuzagusubiza mu masaha 24. 🙏",
+        home:"Ahabanza", prod:"Ibicuruzwa", cont:"Twandikire", serv:"Serivisi", login:"Injira",
+        openNow:"Turakinguye", closedNow:"Turafunze", copied:"Byakoporowe", sending:"Biroherezwa…",
+        quickWa:"Tuganirire kuri WhatsApp", dirText:"Reba inzira",
+        deliverNote:"Urashaka ko bitugeraho ubu? Tubwohereze ako kanya:", again:"Ohereza ubundi butumwa"
+    }
+};
+
+function applyTranslations(l) {
+    const t = T[l] || T.en;
+    localStorage.setItem('dtLang', l);
+    document.documentElement.lang = l;
+    $('pageEyebrow').textContent    = t.eyebrow;
+    $('pageTitle').innerHTML        = t.title;
+    $('pageSubtitle').textContent   = t.subtitle;
+    $('infoTag').textContent        = t.infoTag;
+    $('infoTitle').innerHTML        = t.infoTitle;
+    $('infoText').textContent       = t.infoText;
+    $('labelLocation').textContent  = t.labelLocation;
+    $('labelPhone').textContent     = t.labelPhone;
+    $('labelEmail').textContent     = t.labelEmail;
+    $('labelHours').textContent     = t.labelHours;
+    $('hoursValue').textContent     = t.hoursValue;
+    $('formTitle').textContent      = t.formTitle;
+    $('formSubtitle').textContent   = t.formSubtitle;
+    $('labelName').textContent      = t.labelName;
+    $('labelEmailField').textContent= t.labelEmailField;
+    $('labelPhoneField').textContent= t.labelPhoneField;
+    $('labelSubject').textContent   = t.labelSubject;
+    $('labelMessage').textContent   = t.labelMessage;
+    if (!$('submitBtn').disabled) $('btnText').textContent = t.btnText;
+    $('optOrder').textContent       = t.optOrder;
+    $('optQuestion').textContent    = t.optQuestion;
+    $('optWholesale').textContent   = t.optWholesale;
+    $('optOther').textContent       = t.optOther;
+    $('successTitle').textContent   = t.successTitle;
+    $('successText').textContent    = t.successText;
+    $('deliverNote').textContent    = t.deliverNote;
+    $('againBtn').textContent       = t.again;
+    $('quickWa').textContent        = t.quickWa;
+    $('dirText').textContent        = t.dirText;
+    $('navHome').textContent        = t.home;
+    $('navProduct').textContent     = t.prod;
+    $('navContact').textContent     = t.cont;
+    $('navServices').textContent    = t.serv;
+    $('navLogin').textContent       = t.login;
+    updateOpen();
+}
+
+// ── INIT ─────────────────────────────────────────────────────
+window.onload = () => {
+    if (localStorage.getItem('dtTheme') === 'light') {
+        document.body.classList.add('light');
+        $('themeIcon').className = 'fa-solid fa-moon';
+    }
+    const savedLang = localStorage.getItem('dtLang') || 'en';
+    $('language').value = savedLang;
+    applyTranslations(savedLang);
+    updateForm();
+};
+</script>
+</body>
+</html>
